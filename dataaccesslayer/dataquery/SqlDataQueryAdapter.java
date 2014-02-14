@@ -1,6 +1,6 @@
 package dataaccesslayer.dataquery;
 
-public class SqlDataQueryAdapter extends DataQueryAdapter {
+public class SqlDataQueryAdapter implements DataQueryAdapter<String> {
 	public void print(DataQuery query) {
 		String result = "";
 
@@ -29,5 +29,9 @@ public class SqlDataQueryAdapter extends DataQueryAdapter {
 		}
 
 		System.out.println(result.substring(0, result.length() - 1));
+	}
+
+	public String objectForQuery(DataQuery query) {
+		return null;
 	}
 }

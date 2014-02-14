@@ -6,10 +6,10 @@ import java.util.ArrayList;
 abstract public class DataQuery {
 	public static final String ALL_FIELDS = "*";
 
-	static final int QUERY_TYPE_SELECT = 504748;
-	static final int QUERY_TYPE_INSERT = 504749;
-	static final int QUERY_TYPE_UPDATE = 504750;
-	static final int QUERY_TYPE_DELETE = 504751;
+	public static final int QUERY_TYPE_SELECT = 504748;
+	public static final int QUERY_TYPE_INSERT = 504749;
+	public static final int QUERY_TYPE_UPDATE = 504750;
+	public static final int QUERY_TYPE_DELETE = 504751;
 
 	WhereClause _whereClause;
 	ArrayList<String> _fields;
@@ -27,6 +27,10 @@ abstract public class DataQuery {
 		_queryType = queryType;
 
 		return this;
+	}
+
+	public int getType() {
+		return _queryType;
 	}
 
 	public DataQuery select() {

@@ -1,4 +1,5 @@
 package dataaccesslayer.dataquery;
 
-abstract public class DataQueryAdapter {
+public interface DataQueryAdapter<E> {
+	public E objectForQuery(DataQuery query);
 }
