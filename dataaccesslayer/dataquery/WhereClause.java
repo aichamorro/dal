@@ -1,4 +1,4 @@
-package dataquery;
+package dataaccesslayer.dataquery;
 
 public class WhereClause {
 	public WhereClause attribute() {

@@ -1,4 +1,4 @@
-package dataquery;
+package dataaccesslayer.dataquery;
 
 public class SqlDataQueryAdapter extends DataQueryAdapter {
 	public void print(DataQuery query) {

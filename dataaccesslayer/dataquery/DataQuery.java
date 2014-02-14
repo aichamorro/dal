@@ -1,9 +1,9 @@
-package dataquery;
+package dataaccesslayer.dataquery;
 
 import java.util.HashMap;
 import java.util.ArrayList;
 
-public class DataQuery {
+abstract public class DataQuery {
 	public static final String ALL_FIELDS = "*";
 
 	static final int QUERY_TYPE_SELECT = 504748;
@@ -12,16 +12,15 @@ public class DataQuery {
 	static final int QUERY_TYPE_DELETE = 504751;
 
 	WhereClause _whereClause;
-	FromClause _fromClause;
 	ArrayList<String> _fields;
 	HashMap<String, String> _alias;
 	int _queryType;
 
-	private DataQuery() {
+	protected DataQuery() {
 		_fields = new ArrayList<String>();
 		_alias = new HashMap<String, String>();
 		_whereClause = new WhereClause();
-		_fromClause = new FromClause();
+		_queryType = -1;
 	}
 
 	private DataQuery setType(int queryType) {
@@ -30,20 +29,28 @@ public class DataQuery {
 		return this;
 	}
 
-	static public DataQuery select() {
-		return new DataQuery().setType(QUERY_TYPE_SELECT);
+	public DataQuery select() {
+		assert -1 == _queryType : "The query type has already been set";
+
+		return setType(QUERY_TYPE_SELECT);
 	}
 
-	static public DataQuery insert() {
-		return new DataQuery().setType(QUERY_TYPE_INSERT);
+	public DataQuery insert() {
+		assert -1 == _queryType : "The query type has already been set";
+
+		return setType(QUERY_TYPE_INSERT);
 	}
 
-	static public DataQuery delete() {
-		return new DataQuery().setType(QUERY_TYPE_DELETE);
+	public DataQuery delete() {
+		assert -1 == _queryType : "The query type has already been set";
+
+		return setType(QUERY_TYPE_DELETE);
 	}
 
-	static public DataQuery update() {
-		return new DataQuery().setType(QUERY_TYPE_UPDATE);
+	public DataQuery update() {
+		assert -1 == _queryType : "The query type has already been set";
+
+		return setType(QUERY_TYPE_UPDATE);
 	}
 
 	public DataQuery field(String fieldName) {
@@ -62,8 +69,7 @@ public class DataQuery {
 		return _whereClause;
 	}
 
-	public FromClause from() {
-		return _fromClause;
+	static public FromDataQuery from(String entity) {
+		return new FromDataQuery();
 	}
-
 }
