@@ -2,5 +2,5 @@ package com.aichamorro.dal;
 
 import java.util.Iterator;
 
-interface DataAdapter extends Iterator<Object> {
+interface DataQueryAdapter extends Iterator<Object> {
 }
