@@ -27,7 +27,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.1</version>
         <configuration>
-          <mainClass>com.aichamorro.dalapp.Main</mainClass>
+          <mainClass>com.aichamorro.dalapp.App</mainClass>
         </configuration>
       </plugin>
     </plugins>
