@@ -1,4 +1,4 @@
-package dataaccesslayer.dataquery;
+package com.aichamorro.dal.dataquery;
 
 public class SqlDataQueryAdapter implements DataQueryAdapter<String> {
 	public void print(DataQuery query) {

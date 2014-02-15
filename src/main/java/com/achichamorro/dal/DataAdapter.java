@@ -1,4 +1,4 @@
-package dataaccesslayer;
+package com.aichamorro.dal;
 
 import java.util.Iterator;
 

@@ -1,6 +1,6 @@
-package dataaccesslayer.datasource;
+package com.aichamorro.dal.datasource;
 
-import dataaccesslayer.dataquery.DataQuery;
+import com.aichamorro.dal.dataquery.DataQuery;
 
 abstract public class DataSource {
 	abstract public boolean executeQuery(DataQuery query);

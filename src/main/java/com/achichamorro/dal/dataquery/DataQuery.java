@@ -1,4 +1,4 @@
-package dataaccesslayer.dataquery;
+package com.aichamorro.dal.dataquery;
 
 import java.util.HashMap;
 import java.util.ArrayList;
