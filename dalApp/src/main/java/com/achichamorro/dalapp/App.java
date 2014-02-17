@@ -18,7 +18,6 @@ class App {
 
 //		DataQuery query = DataQuery.from("students").select().field("studentId").field("name");
 		DataQuery query = DataQuery.from("students").select();
-			dal.execute(query, DataSourceRest);
+		dal.on(DataSourceRest).executeQuery(query);
 	}
-
 }
