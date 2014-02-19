@@ -3,7 +3,7 @@ package com.aichamorro.dal.dataquery;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-abstract public class DataQuery {
+public class DataQuery {
 	public static final String ALL_FIELDS = "*";
 
 	public static final int QUERY_TYPE_SELECT = 504748;
@@ -11,69 +11,45 @@ abstract public class DataQuery {
 	public static final int QUERY_TYPE_UPDATE = 504750;
 	public static final int QUERY_TYPE_DELETE = 504751;
 
-	WhereClause _whereClause;
-	ArrayList<String> _fields;
-	HashMap<String, String> _alias;
 	int _queryType;
 
-	protected DataQuery() {
-		_fields = new ArrayList<String>();
-		_alias = new HashMap<String, String>();
-		_whereClause = new WhereClause();
-		_queryType = -1;
-	}
-
-	private DataQuery setType(int queryType) {
+	private DataQuery(int queryType) {
 		_queryType = queryType;
-
-		return this;
 	}
 
 	public int getType() {
 		return _queryType;
 	}
 
-	public DataQuery select() {
-		assert -1 == _queryType : "The query type has already been set";
+	public static DataQuery select(String[] fields) {
+		assert null != fields : "fields must not be null, if you don't want to filter the fields use selectAll";
+		DataQuery result = new DataQuery(QUERY_TYPE_SELECT);
 
-		return setType(QUERY_TYPE_SELECT);
+		return result;
 	}
 
-	public DataQuery insert() {
-		assert -1 == _queryType : "The query type has already been set";
+	public static DataQuery selectAll() {
+		DataQuery result = new DataQuery(QUERY_TYPE_SELECT);
 
-		return setType(QUERY_TYPE_INSERT);
+		return result;
 	}
 
-	public DataQuery delete() {
-		assert -1 == _queryType : "The query type has already been set";
+	public static DataQuery insert() {
+		DataQuery result = new DataQuery(QUERY_TYPE_INSERT);
 
-		return setType(QUERY_TYPE_DELETE);
+		return result;
 	}
 
-	public DataQuery update() {
-		assert -1 == _queryType : "The query type has already been set";
+	public static DataQuery delete() {
+		DataQuery result = new DataQuery(QUERY_TYPE_DELETE);
 
-		return setType(QUERY_TYPE_UPDATE);
+		return result;
 	}
 
-	public DataQuery field(String fieldName) {
-		_fields.add(fieldName);
+	public static DataQuery update() {
+		DataQuery result = new DataQuery(QUERY_TYPE_UPDATE);
 
-		return this;
+		return result;
 	}
 
-	public DataQuery as(String alias) {
-		_alias.put(_fields.get(_fields.size() - 1), alias);
-
-		return this;
-	}
-
-	public WhereClause where() {
-		return _whereClause;
-	}
-
-	static public FromDataQuery from(String entity) {
-		return new FromDataQuery();
-	}
 }
