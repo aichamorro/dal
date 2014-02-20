@@ -4,18 +4,26 @@ import java.util.HashMap;
 import java.util.ArrayList;
 
 public class DataQuery {
-	public static final int QUERY_TYPE_SELECT = 504748;
-	public static final int QUERY_TYPE_INSERT = 504749;
-	public static final int QUERY_TYPE_UPDATE = 504750;
-	public static final int QUERY_TYPE_DELETE = 504751;
-
-	int _queryType;
-
-	DataQuery(int queryType) {
-		_queryType = queryType;
+	public enum QueryType {
+		SELECT,
+		INSERT,
+		UPDATE,
+		DELETE
 	}
 
-	public int getType() {
+	QueryType _queryType;
+	Queryable _payload;
+
+	DataQuery(QueryType queryType) {
+		this(queryType, null);
+	}
+
+	DataQuery(QueryType queryType, Queryable object) {
+		_queryType = queryType;
+		_payload = object;
+	}
+
+	public QueryType getType() {
 		return _queryType;
 	}
 }

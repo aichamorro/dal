@@ -3,6 +3,7 @@ package com.aichamorro.dal.dataquery;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.framework.Test;
+import static org.mockito.Mockito.*;
 
 public class DataQueryFactoryTest extends TestCase {
 	public DataQueryFactoryTest( String testName ) {
@@ -14,19 +15,25 @@ public class DataQueryFactoryTest extends TestCase {
 	}
 
 	public void testCreateASelectDataQuery() {
-		assertEquals(DataQuery.QUERY_TYPE_SELECT, DataQueryFactory.select().getType());
+		assertEquals(DataQuery.QueryType.SELECT, DataQueryFactory.select().getType());
 	}
 
 	public void testCreateAInsertDataQuery() {
-		assertEquals(DataQuery.QUERY_TYPE_INSERT, DataQueryFactory.insert(new Object()).getType());
+		Queryable object = mock(Queryable.class);
+
+		assertEquals(DataQuery.QueryType.INSERT, DataQueryFactory.insert(object).getType());
 	}
 
 	public void testCreateADeleteDataQuery() {
-		assertEquals(DataQuery.QUERY_TYPE_DELETE, DataQueryFactory.delete(new Object()).getType());
+		Queryable object = mock(Queryable.class);
+
+		assertEquals(DataQuery.QueryType.DELETE, DataQueryFactory.delete(object).getType());
 	}
 
 	public void testCreateAUpdateDataQuery() {
-		assertEquals(DataQuery.QUERY_TYPE_UPDATE, DataQueryFactory.update(new Object()).getType());
+		Queryable object = mock(Queryable.class);
+
+		assertEquals(DataQuery.QueryType.UPDATE, DataQueryFactory.update(object).getType());
 	}
 
 	public void testCreateInsertDataQueryWithNullObjectRaisesNullPointerException() {
