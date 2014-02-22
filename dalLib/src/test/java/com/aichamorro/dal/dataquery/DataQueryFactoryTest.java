@@ -15,7 +15,8 @@ public class DataQueryFactoryTest extends TestCase {
 	}
 
 	public void testCreateASelectDataQuery() {
-		assertEquals(DataQuery.QueryType.SELECT, DataQueryFactory.select().getType());
+		Queryable object = mock(Queryable.class);
+		assertEquals(DataQuery.QueryType.SELECT, DataQueryFactory.select(object.getClass()).getType());
 	}
 
 	public void testCreateAInsertDataQuery() {

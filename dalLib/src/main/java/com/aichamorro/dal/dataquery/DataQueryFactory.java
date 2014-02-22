@@ -1,8 +1,8 @@
 package com.aichamorro.dal.dataquery;
 
 public class DataQueryFactory {
-	public static DataQuery select() {
-		DataQuery result = new DataQuery(DataQuery.QueryType.SELECT);
+	public static DataQuery select(Class objectClass) {
+		DataQuery result = new DataQuery(DataQuery.QueryType.SELECT, objectClass);
 
 		return result;
 	}
@@ -12,7 +12,7 @@ public class DataQueryFactory {
 
 		if( null == object ) { throw new NullPointerException(); }
 
-		DataQuery result = new DataQuery(DataQuery.QueryType.INSERT, object);
+		DataQuery result = new DataQuery(DataQuery.QueryType.INSERT, object.getClass(), object);
 
 		return result;
 	}
@@ -22,7 +22,7 @@ public class DataQueryFactory {
 
 		if( null == object ) { throw new NullPointerException(); }
 
-		DataQuery result = new DataQuery(DataQuery.QueryType.DELETE, object);
+		DataQuery result = new DataQuery(DataQuery.QueryType.DELETE, object.getClass(), object);
 
 		return result;
 	}
@@ -32,7 +32,7 @@ public class DataQueryFactory {
 
 		if( null == object ) { throw new NullPointerException(); }
 
-		DataQuery result = new DataQuery(DataQuery.QueryType.UPDATE, object);
+		DataQuery result = new DataQuery(DataQuery.QueryType.UPDATE, object.getClass(), object);
 
 		return result;
 	}

@@ -1,40 +1,55 @@
 package com.aichamorro.dal.dataquery.adapters;
 
 import com.aichamorro.dal.dataquery.DataQuery;
+import com.aichamorro.dal.dataquery.DataQuery.QueryType;
+import com.aichamorro.dal.dataquery.DataQueryStatement;
+import com.aichamorro.dal.dataquery.DataQueryStatementVisitor;
+import com.aichamorro.dal.dataquery.DataQueryVisitor;
+import com.aichamorro.dal.dataquery.Queryable;
 
 public class SqlDataQueryAdapter implements DataQueryAdapter<String> {
-	public void print(DataQuery query) {
-		String result = "";
-
-		switch(query.getType()) {
-			case DataQuery.QUERY_TYPE_SELECT:
-				result += "SELECT ";
-				break;
-			case DataQuery.QUERY_TYPE_INSERT:
-				result += "INSERT ";
-				break;
-			case DataQuery.QUERY_TYPE_UPDATE:
-				result += "UPDATE ";
-				break;
-			case DataQuery.QUERY_TYPE_DELETE:
-				result += "DELETE ";
-				break;
-			default: 
-				assert false : "Not implemented (yet)";
+	public String objectForQuery(DataQuery query) {
+		Visitor visitor = new Visitor();
+		
+		query.visit(visitor);
+		
+		return visitor.getString();
+	}
+	
+	private class Visitor implements DataQueryVisitor {
+		String result;
+		
+		Visitor() {
+			result = new String();
+		}
+		
+		public void setType(QueryType queryType) {
+			result += queryType.name() + " *";
 		}
 
-//		TODO
-//		for(String field : query._fields) {
-//			String alias = query._alias.get(field);
-//
-//			result += field + (alias != null ? " AS " + alias : "");
-//			result += ",";
-//		}
-//
-//		System.out.println(result.substring(0, result.length() - 1));
-	}
+		public void setModel(Class className) {
+			result += " FROM " + className.getSimpleName(); 
+		}
 
-	public String objectForQuery(DataQuery query) {
-		return null;
+		public void setPayload(Queryable payload) {
+			
+		}
+		
+		public String getString() {
+			return result;
+		}
+
+		public void addFilter(DataQueryStatement.Iterator iterator) {
+			while(iterator.hasNext()) {
+				DataQueryStatement statement = iterator.next();
+				
+				if( statement.isComposed() ) {
+					addFilter(statement.iterator());
+				}else{
+					result += " " + statement.getType().name() + " " + statement.toString();
+				}
+			}
+		}
+
 	}
 }

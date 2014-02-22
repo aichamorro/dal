@@ -1,4 +1,4 @@
-package com.achichamorro.dal;
+package com.aichamorro.dal;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

@@ -23,13 +23,13 @@ public class RestDataQueryAdapter implements DataQueryAdapter<HttpOperation> {
 
 	public int methodFromQuery(DataQuery query) {
 		switch(query.getType()) {
-			case DataQuery.QUERY_TYPE_SELECT:
+			case SELECT:
 				return HttpOperation.GET;
-			case DataQuery.QUERY_TYPE_INSERT: 
+			case INSERT: 
 				return HttpOperation.PUT;
-			case DataQuery.QUERY_TYPE_UPDATE: 
+			case UPDATE: 
 				return HttpOperation.POST;
-			case DataQuery.QUERY_TYPE_DELETE: 
+			case DELETE: 
 				return HttpOperation.DELETE;
 			default:
 				assert false : "Query type not recognized " + query.getType();
