@@ -16,25 +16,25 @@ public class DataQueryFactoryTest extends TestCase {
 
 	public void testCreateASelectDataQuery() {
 		Queryable object = mock(Queryable.class);
-		assertEquals(DataQuery.QueryType.SELECT, DataQueryFactory.select(object.getClass()).getType());
+		assertEquals(DataQuery.QueryType.SELECT, DataQueryFactory.select(object.getClass()).createQuery().getType());
 	}
 
 	public void testCreateAInsertDataQuery() {
 		Queryable object = mock(Queryable.class);
 
-		assertEquals(DataQuery.QueryType.INSERT, DataQueryFactory.insert(object).getType());
+		assertEquals(DataQuery.QueryType.INSERT, DataQueryFactory.insert(object).createQuery().getType());
 	}
 
 	public void testCreateADeleteDataQuery() {
 		Queryable object = mock(Queryable.class);
 
-		assertEquals(DataQuery.QueryType.DELETE, DataQueryFactory.delete(object).getType());
+		assertEquals(DataQuery.QueryType.DELETE, DataQueryFactory.delete(object).createQuery().getType());
 	}
 
 	public void testCreateAUpdateDataQuery() {
 		Queryable object = mock(Queryable.class);
 
-		assertEquals(DataQuery.QueryType.UPDATE, DataQueryFactory.update(object).getType());
+		assertEquals(DataQuery.QueryType.UPDATE, DataQueryFactory.update(object).createQuery().getType());
 	}
 
 	public void testCreateInsertDataQueryWithNullObjectRaisesNullPointerException() {

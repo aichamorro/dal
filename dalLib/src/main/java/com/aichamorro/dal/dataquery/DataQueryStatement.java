@@ -9,6 +9,10 @@ public abstract class DataQueryStatement {
 	abstract public DataQueryStatementType getType();
 	abstract public Iterator iterator();
 	
+	public boolean isUnary() {
+		return getType() == DataQueryStatementType.WHERE;
+	}
+	
 	public class Iterator implements java.util.Iterator<DataQueryStatement>{
 		private DataQueryStatement[] _statements;
 		private int _currentIndex;

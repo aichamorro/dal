@@ -1,6 +1,7 @@
 package com.aichamorro.dal.dataquery;
 
 import com.aichamorro.dal.dataquery.adapters.SqlDataQueryAdapter;
+
 import static com.aichamorro.dal.dataquery.DataQueryStatementFactory.*;
 
 import junit.framework.TestCase;
@@ -34,22 +35,22 @@ public class SqlDataQueryAdapterTest extends TestCase{
 	}
 
 	public void testSelectQueryWithNoFilterReturnsSelectAllStatement() {
-		DataQuery query = DataQueryFactory.select(object.getClass());
+		DataQueryFactory query = DataQueryFactory.select(object.getClass());
 		
-		assertEquals("SELECT * FROM " + objectClass, adapter.objectForQuery(query)); 
+		assertEquals("SELECT * FROM " + objectClass, adapter.objectForQuery(query.createQuery())); 
 	}
 	
 	public void testSelectQueryWithFilterReturnsSelectWithWhereStatement() {
-		DataQuery query = DataQueryFactory.select(object.getClass()).where("id='5'");
+		DataQuery query = DataQueryFactory.select(object.getClass()).where("id='5'").createQuery();
 		
 		assertEquals("SELECT * FROM " + objectClass + " WHERE id='5'", adapter.objectForQuery(query));
 	}
 	
-//	public void testSelectQueryWithTwoFiltersUsingAndConcatenation() {
-//		DataQuery query = DataQueryFactory.select(object.getClass()).where("id='" + 5 + "'").and("name='Alberto'");
-//		
-//		assertEquals("SELECT * FROM Queryable WHERE id='5' AND name='Alberto'", adapter.objectForQuery(query));
-//	}
+	public void testSelectQueryWithTwoFiltersUsingAndConcatenation() {
+		DataQuery query = DataQueryFactory.select(object.getClass()).where(and("id='5'", "name='Alberto'")).createQuery();	
+		
+		assertEquals("SELECT * FROM " + objectClass + " WHERE id='5' AND name='Alberto'", adapter.objectForQuery(query));
+	}
 	
 //	public void testSelectQueryWithTwoFiltersUsingOrConcatenation() {
 //		DataQuery query = DataQueryFactory.select(object).where("id='5'").or("name='Alberto'");
