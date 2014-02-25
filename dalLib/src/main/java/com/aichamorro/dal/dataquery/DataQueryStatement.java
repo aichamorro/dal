@@ -2,7 +2,7 @@ package com.aichamorro.dal.dataquery;
 
 public abstract class DataQueryStatement {
 	public enum DataQueryStatementType {
-		WHERE, AND, OR, UNTYPED
+		WHERE, AND, OR, UNTYPED, NOT
 	}
 	
 	abstract public boolean isComposed();
