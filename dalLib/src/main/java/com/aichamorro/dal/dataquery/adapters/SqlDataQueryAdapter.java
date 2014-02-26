@@ -23,7 +23,7 @@ public class SqlDataQueryAdapter implements DataQueryAdapter<String> {
 		}
 		
 		public void setType(QueryType queryType) {
-			result += queryType.name() + " *";
+			result += queryType.name() + (queryType == QueryType.SELECT ? " *" : "");
 		}
 
 		public void setModel(Class className) {

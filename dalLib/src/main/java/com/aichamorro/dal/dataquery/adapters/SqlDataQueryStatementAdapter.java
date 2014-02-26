@@ -1,14 +1,9 @@
 package com.aichamorro.dal.dataquery.adapters;
 
 import com.aichamorro.dal.dataquery.DataQueryStatement;
-import com.aichamorro.dal.dataquery.DataQueryStatement.DataQueryStatementType;
 import com.aichamorro.dal.dataquery.DataQueryStatement.Iterator;
 
 public class SqlDataQueryStatementAdapter {
-	private static final String AND_STRING = " AND ";
-	private static final String OR_STRING = " OR ";
-	private static final String NOT_STRING = "NOT ";
-	
 	public String statementAdapter(DataQueryStatement stmnt) {
 		switch( stmnt.getType() ) {
 		case AND:

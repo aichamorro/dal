@@ -25,6 +25,7 @@ public class SqlDataQueryAdapterTest extends TestCase{
 	public void setUp() {
 		adapter = new SqlDataQueryAdapter();
 		object = mock(Queryable.class);
+			when(object.getId()).thenReturn(5L);
 		objectClass = object.getClass().getSimpleName();
 	}
 	
@@ -74,5 +75,17 @@ public class SqlDataQueryAdapterTest extends TestCase{
 		DataQuery query = DataQueryFactory.select(object.getClass()).where(or(and("id='5'", "name='Alberto'"), statement("surname='Chamorro'"))).createQuery();
 
 		assertEquals("SELECT * FROM " + objectClass + " WHERE ((id='5' AND name='Alberto') OR surname='Chamorro')", adapter.objectForQuery(query));
+	}
+	
+	public void testSimpleDeleteQuery() {
+		DataQuery query = DataQueryFactory.delete(object).createQuery();
+		
+		assertEquals("DELETE FROM " + objectClass + " WHERE id='5'", adapter.objectForQuery(query));
+	}
+	
+	public void testSimpleInsertQuery() {
+		DataQuery query = DataQueryFactory.insert(object).createQuery();
+		
+		assertEquals("INSERT INTO " + objectClass + "VALUES()", adapter.objectForQuery(query));
 	}
 }
