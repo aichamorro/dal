@@ -3,8 +3,6 @@ package com.aichamorro.dal.dataquery.adapters;
 import com.aichamorro.dal.dataquery.DataQuery;
 import com.aichamorro.dal.dataquery.DataQuery.QueryType;
 import com.aichamorro.dal.dataquery.DataQueryStatement;
-import com.aichamorro.dal.dataquery.DataQueryStatement.DataQueryStatementType;
-import com.aichamorro.dal.dataquery.DataQueryStatementVisitor;
 import com.aichamorro.dal.dataquery.DataQueryVisitor;
 import com.aichamorro.dal.dataquery.Queryable;
 
@@ -29,7 +27,7 @@ public class SqlDataQueryAdapter implements DataQueryAdapter<String> {
 		}
 
 		public void setModel(Class className) {
-			result += " FROM " + className.getSimpleName(); 
+			result += SqlStatements.FROM + className.getSimpleName(); 
 		}
 
 		public void setPayload(Queryable payload) {
@@ -39,37 +37,11 @@ public class SqlDataQueryAdapter implements DataQueryAdapter<String> {
 		public String getString() {
 			return result;
 		}
-
-		private String addFilter(DataQueryStatement.Iterator iterator, String operator) {
-			String result = "";
-			
-			boolean hasNext = iterator.hasNext();
-			while(hasNext) {
-				DataQueryStatement statement = iterator.next();
-				
-				result += statement;
-				
-				hasNext = iterator.hasNext();
-				if( hasNext ) {
-					result += " " + operator + " ";
-				}
-			}
-			
-			return result;
-		}
 		
 		public void addFilter(DataQueryStatement.Iterator iterator) {
-			result += " WHERE";
+			assert iterator.hasNext() : "WTF? Emtpy iterator? Really?";
 			
-			while(iterator.hasNext()) {
-				DataQueryStatement statement = iterator.next();
-				
-				if( statement.isComposed() ) {
-					result += " " + addFilter(statement.iterator(), statement.getType().name());
-				}else{
-					result += " " + statement.toString();
-				}
-			}
+			result += SqlStatements.WHERE + new SqlDataQueryStatementAdapter().statementAdapter(iterator.next());
 		}
 	}
 }

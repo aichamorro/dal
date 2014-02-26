@@ -12,23 +12,21 @@ public class SqlDataQueryStatementAdapter {
 	public String statementAdapter(DataQueryStatement stmnt) {
 		switch( stmnt.getType() ) {
 		case AND:
-			return composeString("", stmnt, AND_STRING);
+			return composeString("", stmnt, SqlStatements.AND);
 		case OR:
-			return composeString("", stmnt, OR_STRING);
+			return composeString("", stmnt, SqlStatements.OR);
 		case NOT:
-			return composeString(NOT_STRING, stmnt, "");
+			return composeString(SqlStatements.NOT, stmnt, "");
 		case UNTYPED:
-			return stmnt.toString();
 		default:
-			assert false : "DataQueryStatement.getType() not recognized";
+			return stmnt.toString();
 		}
-		
-		return null;
 	}
 
 	private String composeString(String prefix, DataQueryStatement stmnt, String suffix ) {
 		assert null != prefix : "The prefix string must be not null, use an empty string instead";
 		assert null != suffix : "The postfix string must be not null, use an empty string instead";
+		
 		String result = "(";
 
 		Iterator iterator = stmnt.iterator();
