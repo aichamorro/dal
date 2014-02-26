@@ -12,11 +12,11 @@ public class SqlDataQueryStatementAdapter {
 	public String statementAdapter(DataQueryStatement stmnt) {
 		switch( stmnt.getType() ) {
 		case AND:
-			return andAdapter(stmnt);
+			return composeString("", stmnt, AND_STRING);
 		case OR:
-			return orAdapter(stmnt);
+			return composeString("", stmnt, OR_STRING);
 		case NOT:
-			return notAdapter(stmnt);
+			return composeString(NOT_STRING, stmnt, "");
 		case UNTYPED:
 			return stmnt.toString();
 		default:
@@ -25,46 +25,19 @@ public class SqlDataQueryStatementAdapter {
 		
 		return null;
 	}
-	
-	private String notAdapter(DataQueryStatement stmnt) {
-		assert stmnt.getType() == DataQueryStatementType.NOT : "The statement is not an NOT statement";
-		
+
+	private String composeString(String prefix, DataQueryStatement stmnt, String suffix ) {
+		assert null != prefix : "The prefix string must be not null, use an empty string instead";
+		assert null != suffix : "The postfix string must be not null, use an empty string instead";
 		String result = "(";
+
 		Iterator iterator = stmnt.iterator();
 		while(iterator.hasNext()) {
 			DataQueryStatement subStatement = iterator.next();
 			
-			result += NOT_STRING + statementAdapter(subStatement) + " ";
+			result += prefix + statementAdapter(subStatement) + suffix;
 		}
 		
-		return result.trim() + ")";
-	}
-	
-	private String andAdapter(DataQueryStatement stmnt) {
-		assert stmnt.getType() == DataQueryStatementType.AND : "The statement is not an AND statement";
-
-		String result = "(";
-		Iterator iterator = stmnt.iterator();
-		while(iterator.hasNext()) {
-			DataQueryStatement subStmnt = iterator.next();
-			
-			result += statementAdapter(subStmnt) + AND_STRING;
-		}
-		
-		return result.substring(0, result.length() - AND_STRING.length()) + ")";
-	}
-	
-	private String orAdapter(DataQueryStatement stmnt) {
-		assert stmnt.getType() == DataQueryStatementType.OR : "The statement is not an OR statement";
-
-		String result = "(";
-		Iterator iterator = stmnt.iterator();
-		while(iterator.hasNext()) {
-			DataQueryStatement subStmnt = iterator.next();
-			
-			result += statementAdapter(subStmnt) + OR_STRING;
-		}
-		
-		return result.substring(0, result.length() - OR_STRING.length()) + ")";
+		return result.substring(0, result.length() - suffix.length()) + ")";
 	}
 }
