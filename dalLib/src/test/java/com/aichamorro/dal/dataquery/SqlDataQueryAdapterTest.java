@@ -78,14 +78,32 @@ public class SqlDataQueryAdapterTest extends TestCase{
 	}
 	
 	public void testSimpleDeleteQuery() {
-		DataQuery query = DataQueryFactory.delete(object).createQuery();
+		DataQuery query = DataQueryFactory.delete(new MockModelForInsert()).createQuery();
 		
-		assertEquals("DELETE FROM " + objectClass + " WHERE id='5'", adapter.objectForQuery(query));
+		assertEquals("DELETE FROM MockModelForInsert WHERE id='5'", adapter.objectForQuery(query));
 	}
 	
 	public void testSimpleInsertQuery() {
-		DataQuery query = DataQueryFactory.insert(object).createQuery();
+		DataQuery query = DataQueryFactory.insert(new MockModelForInsert()).createQuery();
 		
-		assertEquals("INSERT INTO " + objectClass + "VALUES()", adapter.objectForQuery(query));
+		assertEquals("INSERT INTO MockModelForInsert (_name,_surname,_age) VALUES()", adapter.objectForQuery(query));
+	}
+}
+
+class MockModelForInsert implements Queryable {
+	private String _name;
+	private String _surname;
+	private String _age;
+	private long _id;
+
+	public MockModelForInsert() {
+		_name = "Alberto";
+		_surname = "Chamorro";
+		_age = "32";
+		_id = 5;
+	}
+	
+	public long getId() {
+		return _id;
 	}
 }

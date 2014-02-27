@@ -1,6 +1,8 @@
 package com.aichamorro.dal.dataquery;
 
-import static com.aichamorro.dal.dataquery.DataQueryStatementFactory.*;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class DataQuery {
 	public enum QueryType {
@@ -10,12 +12,6 @@ public class DataQuery {
 		DELETE;
 	};
 	
-	public enum FilterType {
-		AND,
-		OR,
-		WHERE
-	}
-
 	QueryType _queryType;
 	Queryable _payload;
 	DataQueryStatement _where;
@@ -34,12 +30,34 @@ public class DataQuery {
 		return _queryType;
 	}
 	
+	public HashMap<String, String> payloadAsHashMap() {
+		LinkedHashMap<String, String> result = new LinkedHashMap<String, String>();
+		
+		int i=0;
+		for( Field f : _modelClass.getDeclaredFields() ) {
+			boolean isAccessible = f.isAccessible();
+			f.setAccessible(true);
+			
+			try {
+				result.put(f.getName(), f.get(_payload).toString());
+			}catch(Exception ex) {
+				assert false : "Exception occured: " + f.getName() + " " + ex.toString();
+			}
+			
+			f.setAccessible(isAccessible);
+		}
+		
+		return result;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public void visit(DataQueryVisitor visitor) {
 		visitor.setType(_queryType);
 		visitor.setModel(_modelClass);
-		visitor.setPayload(_payload);
 		
+		if( null != _payload ) {
+			visitor.setPayload(payloadAsHashMap());
+		}
 		if( _where != null ) {
 			visitor.addFilter(_where.iterator());		
 		}

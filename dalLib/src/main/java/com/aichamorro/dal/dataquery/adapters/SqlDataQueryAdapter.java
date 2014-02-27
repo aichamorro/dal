@@ -1,10 +1,11 @@
 package com.aichamorro.dal.dataquery.adapters;
 
+import java.util.HashMap;
+
 import com.aichamorro.dal.dataquery.DataQuery;
 import com.aichamorro.dal.dataquery.DataQuery.QueryType;
 import com.aichamorro.dal.dataquery.DataQueryStatement;
 import com.aichamorro.dal.dataquery.DataQueryVisitor;
-import com.aichamorro.dal.dataquery.Queryable;
 
 public class SqlDataQueryAdapter implements DataQueryAdapter<String> {
 	public String objectForQuery(DataQuery query) {
@@ -17,21 +18,47 @@ public class SqlDataQueryAdapter implements DataQueryAdapter<String> {
 	
 	private class Visitor implements DataQueryVisitor {
 		String result;
+		QueryType _queryType;
 		
 		Visitor() {
 			result = new String();
 		}
 		
 		public void setType(QueryType queryType) {
-			result += queryType.name() + (queryType == QueryType.SELECT ? " *" : "");
+			_queryType = queryType;
+			
+			result += queryType.name();
 		}
 
 		public void setModel(Class className) {
-			result += SqlStatements.FROM + className.getSimpleName(); 
+			switch(_queryType) {
+			case SELECT: result += " *";
+			case DELETE: result += SqlStatements.FROM + className.getSimpleName(); break;
+			case UPDATE: result += " " + className.getSimpleName(); break;
+			case INSERT: result += SqlStatements.INTO + className.getSimpleName(); break;
+			default:
+			}
+		}
+		
+		private String getKeysAsString(HashMap<String, String>payload) {
+			StringBuilder sb = new StringBuilder();
+
+			for( String key : payload.keySet() ) {
+				sb.append(key + ",");
+			}
+
+			assert sb.length() > 0 : "No payload received!!";
+			return sb.substring(0, sb.length() - 1).toString();
 		}
 
-		public void setPayload(Queryable payload) {
-			
+		public void setPayload(HashMap<String, String>payload) {
+			switch(_queryType) {
+			case INSERT: result += "(" + getKeysAsString(payload) + ")"+ SqlStatements.VALUES + "()";
+			case UPDATE:
+			case DELETE:
+			case SELECT:
+			default:
+			}
 		}
 		
 		public String getString() {
