@@ -1,5 +1,6 @@
 package com.aichamorro.dal.dataquery;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -35,16 +36,18 @@ public class DataQuery {
 		
 		int i=0;
 		for( Field f : _modelClass.getDeclaredFields() ) {
-			boolean isAccessible = f.isAccessible();
-			f.setAccessible(true);
-			
-			try {
-				result.put(f.getName(), f.get(_payload).toString());
-			}catch(Exception ex) {
-				assert false : "Exception occured: " + f.getName() + " " + ex.toString();
+			if( f.isAnnotationPresent(DataField.class) ) {
+				boolean isAccessible = f.isAccessible();
+				f.setAccessible(true);
+				
+				try {
+					result.put(f.getAnnotation(DataField.class).value(), f.get(_payload).toString());
+				}catch(Exception ex) {
+					assert false : "Exception occured: " + f.getName() + " " + ex.toString();
+				}
+				
+				f.setAccessible(isAccessible);	
 			}
-			
-			f.setAccessible(isAccessible);
 		}
 		
 		return result;

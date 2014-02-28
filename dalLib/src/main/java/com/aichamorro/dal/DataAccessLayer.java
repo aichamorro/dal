@@ -1,9 +1,8 @@
 package com.aichamorro.dal;
 
-import com.aichamorro.dal.dataquery.DataQuery;
-import com.aichamorro.dal.datasource.DataSource;
-
 import java.util.HashMap;
+
+import com.aichamorro.dal.datasource.DataSource;
 
 public class DataAccessLayer {
 	private HashMap<String, DataSource> _datasources;

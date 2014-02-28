@@ -50,17 +50,28 @@ public class SqlDataQueryAdapter implements DataQueryAdapter<String> {
 			assert sb.length() > 0 : "No payload received!!";
 			return sb.substring(0, sb.length() - 1).toString();
 		}
+		
+		private String getValuesAsString(HashMap<String, String> payload) {
+			StringBuilder sb = new StringBuilder();
+
+			for( String key : payload.keySet() ) {
+				sb.append(payload.get(key) + ",");
+			}
+
+			assert sb.length() > 0 : "No payload received!!";
+			return sb.substring(0, sb.length() - 1).toString();		
+		}
 
 		public void setPayload(HashMap<String, String>payload) {
 			switch(_queryType) {
-			case INSERT: result += "(" + getKeysAsString(payload) + ")"+ SqlStatements.VALUES + "()";
+			case INSERT: result += "(" + getKeysAsString(payload) + ") "+ SqlStatements.VALUES + "(" + getValuesAsString(payload) + ")";
 			case UPDATE:
 			case DELETE:
 			case SELECT:
 			default:
 			}
 		}
-		
+
 		public String getString() {
 			return result;
 		}

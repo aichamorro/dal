@@ -11,7 +11,7 @@ public class DataQueryStatementFactory {
 		return new ComposedDataQueryStatement(DataQueryStatementType.WHERE, statement);
 	}
 	
-	public static DataQueryStatement untypedStatement(String statement) {
+	public static DataQueryStatement statement(String statement) {
 		return new SingleDataQueryStatement(DataQueryStatementType.UNTYPED, statement);
 	}
 
@@ -27,5 +27,27 @@ public class DataQueryStatementFactory {
 		}
 
 		return and(dqStatements);
+	}
+	
+	public static DataQueryStatement or(DataQueryStatement... statements) {
+		return new ComposedDataQueryStatement(DataQueryStatementType.OR, statements);
+	}
+	
+	public static DataQueryStatement or(String... statements) {
+		DataQueryStatement[] dqStatements = new DataQueryStatement[statements.length];
+		
+		for(int i=0; i<statements.length; i++) {
+			dqStatements[i] = new SingleDataQueryStatement(DataQueryStatementType.UNTYPED, statements[i]);
+		}
+
+		return or(dqStatements);
+	}
+	
+	public static DataQueryStatement not(String statement) {
+		return new ComposedDataQueryStatement(DataQueryStatementType.NOT, statement(statement));
+	}
+	
+	public static DataQueryStatement not(DataQueryStatement statement) {
+		return new ComposedDataQueryStatement(DataQueryStatementType.NOT, statement);
 	}
 }

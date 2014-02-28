@@ -86,14 +86,20 @@ public class SqlDataQueryAdapterTest extends TestCase{
 	public void testSimpleInsertQuery() {
 		DataQuery query = DataQueryFactory.insert(new MockModelForInsert()).createQuery();
 		
-		assertEquals("INSERT INTO MockModelForInsert (_name,_surname,_age) VALUES()", adapter.objectForQuery(query));
+		assertEquals("INSERT INTO MockModelForInsert(name,surname,age) VALUES(Alberto,Chamorro,32)", adapter.objectForQuery(query));
 	}
 }
 
 class MockModelForInsert implements Queryable {
+	@DataField("name")
 	private String _name;
+	
+	@DataField("surname")
 	private String _surname;
+	
+	@DataField("age")
 	private String _age;
+	
 	private long _id;
 
 	public MockModelForInsert() {
