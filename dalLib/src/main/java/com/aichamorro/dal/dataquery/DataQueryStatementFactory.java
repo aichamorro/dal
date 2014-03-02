@@ -14,7 +14,7 @@ public class DataQueryStatementFactory {
 	public static DataQueryStatement statement(String statement) {
 		return new SingleDataQueryStatement(DataQueryStatementType.UNTYPED, statement);
 	}
-
+	
 	public static DataQueryStatement and(DataQueryStatement... statements) {
 		return new ComposedDataQueryStatement(DataQueryStatementType.AND, statements);
 	}

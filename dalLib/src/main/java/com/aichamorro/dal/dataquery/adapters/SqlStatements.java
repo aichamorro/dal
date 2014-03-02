@@ -13,6 +13,7 @@ public interface SqlStatements {
 	public static final String OR = " OR ";
 	public static final String NOT = "NOT ";
 	public static final String VALUES = "VALUES";
+	public static final String SET = " SET ";
 	
 	// TODO To be continued...
 }

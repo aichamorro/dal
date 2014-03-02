@@ -1,6 +1,9 @@
 package com.aichamorro.dal.dataquery;
 
 import com.aichamorro.dal.dataquery.adapters.SqlDataQueryAdapter;
+import com.aichamorro.dal.dataquery.annotations.ModelName;
+import com.aichamorro.dal.dataquery.annotations.ModelField;
+import com.aichamorro.dal.dataquery.annotations.ModelId;
 
 import static com.aichamorro.dal.dataquery.DataQueryStatementFactory.*;
 
@@ -19,7 +22,7 @@ public class SqlDataQueryAdapterTest extends TestCase{
 	}
 	
 	SqlDataQueryAdapter adapter;
-	Queryable object;
+	Queryable<Long> object;
 	String objectClass;
 	
 	public void setUp() {
@@ -80,36 +83,44 @@ public class SqlDataQueryAdapterTest extends TestCase{
 	public void testSimpleDeleteQuery() {
 		DataQuery query = DataQueryFactory.delete(new MockModelForInsert()).createQuery();
 		
-		assertEquals("DELETE FROM MockModelForInsert WHERE id='5'", adapter.objectForQuery(query));
+		assertEquals("DELETE FROM Queryable WHERE id='5'", adapter.objectForQuery(query));
 	}
 	
 	public void testSimpleInsertQuery() {
 		DataQuery query = DataQueryFactory.insert(new MockModelForInsert()).createQuery();
 		
-		assertEquals("INSERT INTO MockModelForInsert(name,surname,age) VALUES(Alberto,Chamorro,32)", adapter.objectForQuery(query));
+		assertEquals("INSERT INTO Queryable(name,surname,age) VALUES('Alberto','Chamorro','32')", adapter.objectForQuery(query));
+	}
+	
+	public void testUpdateSimpleQuery() {
+		DataQuery query = DataQueryFactory.update(new MockModelForInsert()).createQuery();
+		
+		assertEquals("UPDATE Queryable SET name='Alberto',surname='Chamorro',age='32' WHERE idMock='5'", adapter.objectForQuery(query));
 	}
 }
 
-class MockModelForInsert implements Queryable {
-	@DataField("name")
-	private String _name;
+@ModelName("Queryable")
+class MockModelForInsert implements Queryable<Long> {
+	@ModelField
+	private String name;
 	
-	@DataField("surname")
+	@ModelField("surname")
 	private String _surname;
 	
-	@DataField("age")
-	private String _age;
+	@ModelField("age")
+	private long _age;
 	
-	private long _id;
+	@ModelId("idMock")
+	private Long _id;
 
 	public MockModelForInsert() {
-		_name = "Alberto";
+		name = "Alberto";
 		_surname = "Chamorro";
-		_age = "32";
-		_id = 5;
+		_age = 32;
+		_id = Long.valueOf(5);
 	}
 	
-	public long getId() {
+	public Long getId() {
 		return _id;
 	}
 }

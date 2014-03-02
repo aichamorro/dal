@@ -30,12 +30,12 @@ public class SqlDataQueryAdapter implements DataQueryAdapter<String> {
 			result += queryType.name();
 		}
 
-		public void setModel(Class className) {
+		public void setModel(String modelName) {
 			switch(_queryType) {
 			case SELECT: result += " *";
-			case DELETE: result += SqlStatements.FROM + className.getSimpleName(); break;
-			case UPDATE: result += " " + className.getSimpleName(); break;
-			case INSERT: result += SqlStatements.INTO + className.getSimpleName(); break;
+			case DELETE: result += SqlStatements.FROM + modelName; break;
+			case UPDATE: result += " " + modelName; break;
+			case INSERT: result += SqlStatements.INTO + modelName; break;
 			default:
 			}
 		}
@@ -55,7 +55,9 @@ public class SqlDataQueryAdapter implements DataQueryAdapter<String> {
 			StringBuilder sb = new StringBuilder();
 
 			for( String key : payload.keySet() ) {
-				sb.append(payload.get(key) + ",");
+				sb.append('\'');
+				sb.append(payload.get(key));
+				sb.append("',");
 			}
 
 			assert sb.length() > 0 : "No payload received!!";
@@ -63,11 +65,31 @@ public class SqlDataQueryAdapter implements DataQueryAdapter<String> {
 		}
 
 		public void setPayload(HashMap<String, String>payload) {
+			StringBuilder sb = new StringBuilder();
+			
 			switch(_queryType) {
-			case INSERT: result += "(" + getKeysAsString(payload) + ") "+ SqlStatements.VALUES + "(" + getValuesAsString(payload) + ")";
-			case UPDATE:
-			case DELETE:
-			case SELECT:
+			case INSERT: 
+				sb.append("(");
+				sb.append(getKeysAsString(payload));
+				sb.append(") ");
+				sb.append(SqlStatements.VALUES);
+				sb.append("(");
+				sb.append(getValuesAsString(payload));
+				sb.append(")");
+				
+				result += sb.toString();
+				break;
+			case UPDATE: 
+				sb.append(SqlStatements.SET);
+				for(String key : payload.keySet()) {
+					sb.append(key);	sb.append("='"); sb.append(payload.get(key)); sb.append("',");
+				}
+
+				assert sb.length() > 0 : "It seems the payload is empty, which is not possible when updating a record";
+				sb.deleteCharAt(sb.length() - 1);
+				
+				result += sb.toString();
+				break;
 			default:
 			}
 		}

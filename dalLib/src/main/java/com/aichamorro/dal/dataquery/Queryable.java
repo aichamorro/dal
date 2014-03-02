@@ -1,5 +1,5 @@
 package com.aichamorro.dal.dataquery;
 
-public interface Queryable {
-	public long getId();
+public interface Queryable<T> {
+	public T getId();
 }
