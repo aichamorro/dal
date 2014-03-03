@@ -10,7 +10,7 @@ public class DataQueryFactoryTest extends TestCase {
 		super( testName );
 	}
 
-	public Test suite() {
+	public static Test suite() {
 		return new TestSuite( DataQueryFactoryTest.class );
 	}
 

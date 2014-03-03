@@ -17,7 +17,7 @@ public class SqlDataQueryAdapterTest extends TestCase{
 		super( suiteName );
 	}
 
-	public Test suite() {
+	public static Test suite() {
 		return new TestSuite(SqlDataQueryAdapterTest.class);
 	}
 	

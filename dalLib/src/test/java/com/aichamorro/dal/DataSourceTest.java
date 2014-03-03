@@ -12,7 +12,7 @@ public class DataSourceTest extends TestCase {
 		super( testName );
 	}
 
-	public Test suite() {
+	public static Test suite() {
 		return new TestSuite(DataSourceTest.class);
 	}
 
