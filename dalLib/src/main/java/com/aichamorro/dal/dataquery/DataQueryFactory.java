@@ -58,7 +58,7 @@ public class DataQueryFactory {
 
 		if( null == object ) { throw new NullPointerException(); }
 
-		DataQueryFactory result = new DataQueryFactory(DataQuery.QueryType.DELETE, object.getClass(), object).where("id='" +  object.getId() + "'");
+		DataQueryFactory result = new DataQueryFactory(DataQuery.QueryType.DELETE, object.getClass(), object).where(getIdFieldNameFor(object) + "='" + object.getId() + "'");
 
 		return result;
 	}

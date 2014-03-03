@@ -83,7 +83,7 @@ public class SqlDataQueryAdapterTest extends TestCase{
 	public void testSimpleDeleteQuery() {
 		DataQuery query = DataQueryFactory.delete(new MockModelForInsert()).createQuery();
 		
-		assertEquals("DELETE FROM Queryable WHERE id='5'", adapter.objectForQuery(query));
+		assertEquals("DELETE FROM Queryable WHERE idMock='5'", adapter.objectForQuery(query));
 	}
 	
 	public void testSimpleInsertQuery() {
