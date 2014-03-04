@@ -1,4 +1,4 @@
-package com.aichamorro.dal.dataquery.adapters;
+package com.aichamorro.dal.dataquery.sql;
 
 public interface SqlStatements {
 	public static final String INSERT = "INSERT";

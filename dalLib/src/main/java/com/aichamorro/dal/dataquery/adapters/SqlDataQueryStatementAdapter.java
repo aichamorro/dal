@@ -2,6 +2,7 @@ package com.aichamorro.dal.dataquery.adapters;
 
 import com.aichamorro.dal.dataquery.DataQueryStatement;
 import com.aichamorro.dal.dataquery.DataQueryStatement.Iterator;
+import com.aichamorro.dal.dataquery.sql.SqlStatements;
 
 public class SqlDataQueryStatementAdapter {
 	public String statementAdapter(DataQueryStatement stmnt) {

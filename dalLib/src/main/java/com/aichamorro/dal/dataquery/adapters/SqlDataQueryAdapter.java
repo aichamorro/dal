@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.aichamorro.dal.dataquery.DataQuery;
 import com.aichamorro.dal.dataquery.DataQuery.QueryType;
+import com.aichamorro.dal.dataquery.sql.SqlStatements;
 import com.aichamorro.dal.dataquery.DataQueryStatement;
 import com.aichamorro.dal.dataquery.DataQueryVisitor;
 
