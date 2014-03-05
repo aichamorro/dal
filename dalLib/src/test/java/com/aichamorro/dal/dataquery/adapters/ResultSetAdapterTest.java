@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.aichamorro.dal.dataquery.DataQueryResult;
+import com.aichamorro.dal.dataquery.DataQueryResultFactory;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -24,6 +25,14 @@ public class ResultSetAdapterTest extends TestCase {
 		when(resultSet.next()).thenReturn(false);
 		
 		assertTrue(ResultSetAdapter.getDataQueryResultFor(resultSet).isEmpty());
+	}
+	
+	public void testGetAValueFromResultSetOfOneRecord() throws SQLException {
+		ResultSet resultSet = mock(ResultSet.class);
+		when(resultSet.next()).thenReturn(true, false);
+		when(resultSet.getString("name")).thenReturn("Alberto");
+		
+		assertEquals("Alberto", ResultSetAdapter.getDataQueryResultFor(resultSet).getStringForField("name"));
 	}
 
 }

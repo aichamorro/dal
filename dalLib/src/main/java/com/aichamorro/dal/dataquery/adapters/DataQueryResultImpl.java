@@ -8,4 +8,9 @@ public class DataQueryResultImpl implements DataQueryResult {
 		return true;
 	}
 
+	public String getStringForField(String field) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
