@@ -52,9 +52,7 @@ public class SqlConnector {
 	public void executeQuery(DataQuery dataQuery) throws SQLException {
 		assert _connection != null : "The connection has not been initialized!!!";
 		
-		ResultSet result = _connection.createStatement().executeQuery(new SqlDataQueryAdapter().objectForQuery(dataQuery));
-		
-		ResultSetAdapter.getDataQueryResult(result);
+		_connection.createStatement().executeQuery(new SqlDataQueryAdapter().objectForQuery(dataQuery));
 	}
 
 	public void close() throws SQLException {

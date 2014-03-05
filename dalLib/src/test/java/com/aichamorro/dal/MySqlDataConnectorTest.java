@@ -86,7 +86,7 @@ public class MySqlDataConnectorTest extends TestCase {
 			connector.executeQuery(DataQueryFactory.select(TestModel.class).createQuery());
 		
 		PowerMockito.verifyStatic();
-		ResultSetAdapter.getDataQueryResult(mockResultSet);
+		ResultSetAdapter.getDataQueryResultFor(mockResultSet);
 	}
 	
 	public void testExecuteSelectQuery() throws SQLException {
