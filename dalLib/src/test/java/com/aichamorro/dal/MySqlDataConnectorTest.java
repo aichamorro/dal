@@ -5,7 +5,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -20,7 +19,6 @@ import org.powermock.modules.junit3.PowerMockSuite;
 import com.aichamorro.dal.dataquery.DataQuery;
 import com.aichamorro.dal.dataquery.DataQueryFactory;
 import com.aichamorro.dal.dataquery.Queryable;
-import com.aichamorro.dal.dataquery.adapters.ResultSetAdapter;
 import com.mysql.jdbc.Connection;
 
 @PrepareForTest(SqlConnector.class)
@@ -69,24 +67,6 @@ public class MySqlDataConnectorTest extends TestCase {
 		DriverManager.getConnection(Mockito.anyString(), Mockito.anyString(), Mockito.anyString());
 		
 		verify(mockConnection).close();
-	}
-	
-	public void testVerifyThatResultIsAdaptedToADataQueryResult() throws SQLException {
-		PowerMockito.mockStatic(DriverManager.class);
-		PowerMockito.mockStatic(ResultSetAdapter.class);
-		Connection mockConnection = mock(Connection.class);
-		Statement mockStatement = mock(Statement.class);
-		ResultSet mockResultSet = mock(ResultSet.class);
-		
-		when(DriverManager.getConnection(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())).thenReturn(mockConnection);
-		when(mockConnection.createStatement()).thenReturn(mockStatement);
-		when(mockStatement.executeQuery(Mockito.anyString())).thenReturn(mockResultSet);
-		
-		SqlConnector connector = new SqlConnector("localhost:8888", "sampleDatabase", "test");
-			connector.executeQuery(DataQueryFactory.select(TestModel.class).createQuery());
-		
-		PowerMockito.verifyStatic();
-		ResultSetAdapter.getDataQueryResultFor(mockResultSet);
 	}
 	
 	public void testExecuteSelectQuery() throws SQLException {

@@ -2,6 +2,7 @@ package com.aichamorro.dal.dataquery;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Iterator;
 
 public class ResultSetDataQueryResult implements DataQueryResult {
 	
@@ -30,4 +31,28 @@ public class ResultSetDataQueryResult implements DataQueryResult {
 		}
 	}
 
+	public boolean hasNext() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public Record next() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean isError() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public Object getError() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Iterator<?> iterator(Class<?> forClass) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

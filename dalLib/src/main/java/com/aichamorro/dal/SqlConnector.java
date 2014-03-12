@@ -1,14 +1,18 @@
 package com.aichamorro.dal;
 
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import com.aichamorro.dal.dataquery.DataQuery;
-import com.aichamorro.dal.dataquery.adapters.ResultSetAdapter;
+import com.aichamorro.dal.dataquery.DataQueryResult;
 import com.aichamorro.dal.dataquery.adapters.SqlDataQueryAdapter;
+import com.aichamorro.dal.dataquery.annotations.ModelField;
+import com.aichamorro.dal.dataquery.annotations.ModelId;
 
 public class SqlConnector {
 	private final String dbProtocol = "jdbc:mysql://";
@@ -49,14 +53,157 @@ public class SqlConnector {
 		return _url;
 	}
 
-	public void executeQuery(DataQuery dataQuery) throws SQLException {
+	public DataQueryResult executeQuery(DataQuery dataQuery) {
 		assert _connection != null : "The connection has not been initialized!!!";
 		
-		_connection.createStatement().executeQuery(new SqlDataQueryAdapter().objectForQuery(dataQuery));
+		String sqlQuery = new SqlDataQueryAdapter().objectForQuery(dataQuery);
+		try {
+			ResultSet resultSet = _connection.createStatement().executeQuery(sqlQuery);
+			
+			return new ResultSetDataQueryResult(resultSet);
+		} catch (SQLException e) {
+			assert false : "Exception occurred: " + e.toString();
+		
+			return new ErrorDataQueryResultImpl(e.toString());
+		}
 	}
 
 	public void close() throws SQLException {
 		_connection.close();
 	}
+}
 
+class ResultSetDataQueryResult implements DataQueryResult {
+
+	private ResultSet _resultSet;
+
+	public ResultSetDataQueryResult(ResultSet resultSet) {
+		_resultSet = resultSet;
+	}
+
+	public boolean isError() {
+		return false;
+	}
+
+	public Object getError() {
+		assert true == isError() : "This is not an error. Hence, you cannot retrieve the error object";
+		
+		return null;
+	}
+
+	public Iterator<?> iterator(Class<?> forClass) {
+		return new ResultSetIteratorImpl(_resultSet, forClass);
+	}
+}
+
+interface ResultSetIterator extends Iterator<Object>{}
+interface ErrorDataQueryResult extends DataQueryResult {}
+
+class ErrorDataQueryResultImpl implements ErrorDataQueryResult {
+	private String _errorMessage;
+
+	public ErrorDataQueryResultImpl(String errorMessage) {
+		_errorMessage = errorMessage;
+	}
+
+	public boolean isError() {
+		return true;
+	}
+
+	public Object getError() {
+		return _errorMessage;
+	}
+
+	public Iterator<?> iterator(Class<?> forClass) {
+		assert false : "Don't try to iterate over an ErrorDataQueryResult!";
+	
+		return null;
+	}
+}
+
+class ResultSetIteratorImpl implements ResultSetIterator {
+
+	private ResultSet _data;
+	private HashMap<String, String> _fields;
+	private HashMap<String, String> _types;
+	private Class<?> _modelClass;
+	
+	public ResultSetIteratorImpl(ResultSet resultSet, Class<?> modelClass) {
+		_data = resultSet;
+		_fields = new HashMap<String, String>();
+		_modelClass = modelClass;
+		
+		boolean idFieldSaved = false;
+		for (Field f : modelClass.getFields()) {
+			if( f.isAnnotationPresent(ModelField.class) ) {
+				String annotationValue = f.getAnnotation(ModelField.class).value();
+				String name = (null == annotationValue || annotationValue.isEmpty()) ? f.getName() : annotationValue;
+				String type = f.getType().getSimpleName();
+				
+				_fields.put(name, f.getName());
+				_types.put(name, type);
+			}else if( !idFieldSaved && f.isAnnotationPresent(ModelId.class) ) {
+				String annotationValue = f.getAnnotation(ModelId.class).value();
+				String name = (null == annotationValue || annotationValue.isEmpty()) ? f.getName() : annotationValue;
+				String type = f.getType().getSimpleName();
+				
+				_fields.put(name, type);
+			}
+		}
+		
+		assert !_fields.isEmpty() : "Seems the modelClass provided does not have either @ModelField nor @ModelId annotations";
+	}
+	
+	public boolean hasNext() {
+		return true;
+	}
+
+	public Object next() {
+		Object result = null;
+		
+		try {
+			result = _modelClass.newInstance();
+			
+			for( String modelField : _fields.keySet() ) {
+				Field f = _modelClass.getField(_fields.get(modelField));
+				String type = _types.get(modelField);
+				
+				if( type.equals("String") ) {
+					f.set(result, _data.getString(modelField));
+				}else if( type.equals("int") || type.equals("Integer") ) {
+					f.set(result, _data.getInt(modelField));
+				}else if( type.equals("float") || type.equals("Float") ) {
+					f.set(result, _data.getFloat(modelField));
+				}else if( type.equals("double") || type.equals("Double") ) {
+					f.set(result, _data.getDouble(modelField));
+				}else {
+					f.set(result, _data.getObject(modelField));
+				}
+			}
+		} catch (InstantiationException e) {
+			assert false : "Exception: " + e.toString();
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			assert false : "Exception: " + e.toString();
+			e.printStackTrace();
+		} catch (NoSuchFieldException e) {
+			assert false : "Exception: " + e.toString();
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			assert false : "Exception: " + e.toString();
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			assert false : "Exception: " + e.toString();
+			e.printStackTrace();
+		} catch (SQLException e) {
+			assert false : "Exception: " + e.toString();
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
+	public void remove() {
+	}
+	
 }

@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Inherited
 public @interface ModelId {
-	String value() default "id";
+	String value() default "";
 }
