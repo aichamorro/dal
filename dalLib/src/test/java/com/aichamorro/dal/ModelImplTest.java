@@ -6,9 +6,11 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.aichamorro.dal.dataquery.annotations.ModelField;
-import com.aichamorro.dal.dataquery.annotations.ModelId;
-import com.aichamorro.dal.dataquery.annotations.ModelName;
+import com.aichamorro.dal.model.Model;
+import com.aichamorro.dal.model.ModelImpl;
+import com.aichamorro.dal.model.annotations.ModelField;
+import com.aichamorro.dal.model.annotations.ModelId;
+import com.aichamorro.dal.model.annotations.ModelName;
 
 public class ModelImplTest extends TestCase {
 	public static Test suite() {

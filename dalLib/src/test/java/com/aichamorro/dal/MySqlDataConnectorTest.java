@@ -18,7 +18,6 @@ import org.powermock.modules.junit3.PowerMockSuite;
 
 import com.aichamorro.dal.dataquery.DataQuery;
 import com.aichamorro.dal.dataquery.DataQueryFactory;
-import com.aichamorro.dal.dataquery.Queryable;
 import com.mysql.jdbc.Connection;
 
 @PrepareForTest(SqlConnector.class)

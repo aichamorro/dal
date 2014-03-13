@@ -1,18 +1,14 @@
 package com.aichamorro.dal;
 
-import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Iterator;
 
 import com.aichamorro.dal.dataquery.DataQuery;
-import com.aichamorro.dal.dataquery.DataQueryResult;
 import com.aichamorro.dal.dataquery.adapters.SqlDataQueryAdapter;
-import com.aichamorro.dal.dataquery.annotations.ModelField;
-import com.aichamorro.dal.dataquery.annotations.ModelId;
+import com.aichamorro.dal.dataquery.result.DataQueryResult;
+import com.aichamorro.dal.dataquery.result.ResultSetDataQueryResult;
 
 public class SqlConnector {
 	private final String dbProtocol = "jdbc:mysql://";

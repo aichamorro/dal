@@ -4,9 +4,9 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
-import com.aichamorro.dal.Model;
-import com.aichamorro.dal.dataquery.annotations.ModelName;
-import com.aichamorro.dal.dataquery.annotations.ModelField;
+import com.aichamorro.dal.model.Model;
+import com.aichamorro.dal.model.annotations.ModelField;
+import com.aichamorro.dal.model.annotations.ModelName;
 
 public class DataQuery {
 	public enum QueryType {

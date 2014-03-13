@@ -4,10 +4,10 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.aichamorro.dal.Model;
-import com.aichamorro.dal.ModelImpl;
-import com.aichamorro.dal.dataquery.annotations.ModelField;
-import com.aichamorro.dal.dataquery.annotations.ModelId;
+import com.aichamorro.dal.model.Model;
+import com.aichamorro.dal.model.ModelImpl;
+import com.aichamorro.dal.model.annotations.ModelField;
+import com.aichamorro.dal.model.annotations.ModelId;
 
 public class DataQueryFactoryTest extends TestCase {
 	public DataQueryFactoryTest( String testName ) {

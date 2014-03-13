@@ -1,10 +1,6 @@
 package com.aichamorro.dal.dataquery;
 
-import java.lang.reflect.Field;
-
-import com.aichamorro.dal.Model;
-import com.aichamorro.dal.dataquery.annotations.ModelField;
-import com.aichamorro.dal.dataquery.annotations.ModelId;
+import com.aichamorro.dal.model.Model;
 
 public class DataQueryFactory {
 	private DataQuery.QueryType _type;

@@ -1,6 +1,8 @@
 package com.aichamorro.dal;
 
-import com.aichamorro.dal.dataquery.DataQueryResult;
+import com.aichamorro.dal.dataquery.result.DataQueryResult;
+import com.aichamorro.dal.dataquery.result.DataQueryResultIterator;
+import com.aichamorro.dal.model.Model;
 
 class ErrorDataQueryResult implements DataQueryResult {
 	private String _errorMessage;
