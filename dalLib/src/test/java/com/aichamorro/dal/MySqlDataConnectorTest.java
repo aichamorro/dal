@@ -88,10 +88,4 @@ public class MySqlDataConnectorTest extends TestCase {
 		
 		// TODO Should the database closed? I think so
 	}
-	
-	private class TestModel implements Queryable<Long>{
-		public Long getId() {
-			return 10L;
-		}
-	}
 }

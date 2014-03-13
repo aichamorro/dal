@@ -23,12 +23,11 @@ public class ModelImplTest extends TestCase {
 		assertEquals("_id", model.getIdField().getName());
 		assertEquals("TestModel", model.getModelName());
 		
-		HashMap<String, Field> modelFields = model.getModelFields();
-		Set<String> keySet = modelFields.keySet();
+		Set<String> modelFields = model.modelFields();
 		
-		assertEquals(2, keySet.size());
-		assertTrue(keySet.contains("_id"));
-		assertTrue(keySet.contains("_name"));
+		assertEquals(2, modelFields.size());
+		assertTrue(modelFields.contains("_id"));
+		assertTrue(modelFields.contains("_name"));
 	}
 	
 	public void testInheritingModelFields() {
@@ -37,13 +36,12 @@ public class ModelImplTest extends TestCase {
 		assertEquals("TestModelInherited", model.getModelName());
 		assertEquals("_id", model.getIdField().getName());
 		
-		HashMap<String, Field> modelFields = model.getModelFields();
-		Set<String> keySet = modelFields.keySet();
+		Set<String> modelFields = model.modelFields();
 		
-		assertEquals(3, keySet.size());
-		assertTrue(keySet.contains("_id"));
-		assertTrue(keySet.contains("_name"));
-		assertTrue(keySet.contains("_surname"));
+		assertEquals(3, modelFields.size());
+		assertTrue(modelFields.contains("_id"));
+		assertTrue(modelFields.contains("_name"));
+		assertTrue(modelFields.contains("_surname"));
 	}
 	
 	public void testGetModelInfoWithAModelWithNameFields() {
@@ -52,15 +50,14 @@ public class ModelImplTest extends TestCase {
 		assertEquals("ModelWithNames", model.getModelName());
 		assertEquals("_id", model.getIdField().getName());
 		
-		HashMap<String, Field> modelFields = model.getModelFields();
-		Set<String> keySet = modelFields.keySet();
+		Set<String> modelFields = model.modelFields();
 		
-		assertEquals(2, keySet.size());
-		assertTrue(keySet.contains("id"));
-		assertEquals("_id", modelFields.get("id").getName());
+		assertEquals(2, modelFields.size());
+		assertTrue(modelFields.contains("id"));
+		assertEquals("5", model.get("id"));
 		
-		assertTrue(keySet.contains("name"));
-		assertEquals("_name", modelFields.get("name").getName());
+		assertTrue(modelFields.contains("name"));
+		assertEquals("Alberto", model.get("name"));
 	}
 	
 	public void testGetModelIdWhenIsDuplicatedReturnsTheSpecificClassModelId() {
@@ -75,24 +72,23 @@ public class ModelImplTest extends TestCase {
 		
 		assertEquals("TestModelInheritedDuplicatingModelIdAndModelFields", model.getModelName());
 		
-		HashMap<String, Field> modelFields = model.getModelFields();
-		Set<String> keySet = modelFields.keySet();
+		Set<String> modelFields = model.modelFields();
 		
-		assertEquals(3, keySet.size());
-		assertTrue(keySet.contains("_id"));
-		assertTrue(keySet.contains("_name"));
-		assertTrue(keySet.contains("_idDuplicated"));
-		assertEquals("_anotherName", modelFields.get("_name").getName());
+		assertEquals(3, modelFields.size());
+		assertTrue(modelFields.contains("_id"));
+		assertTrue(modelFields.contains("_name"));
+		assertTrue(modelFields.contains("_idDuplicated"));
+		assertEquals(100, model.get("_name"));
 	}
 
 	public void testModelIdWhenAreDuplicatedInTheSameClass() {
 		Model model = new TestModelWithDuplicatedIdInTheClass();
 		
-		HashMap<String, Field> modelFields = model.getModelFields();
-		Set<String> keySet = modelFields.keySet();
-		assertEquals(2, keySet.size());
-		assertTrue(keySet.contains("_id"));
-		assertTrue(keySet.contains("_anotherId"));
+		Set<String> modelFields = model.modelFields();
+
+		assertEquals(2, modelFields.size());
+		assertTrue(modelFields.contains("_id"));
+		assertTrue(modelFields.contains("_anotherId"));
 	}
 }
 
@@ -127,17 +123,17 @@ class TestModelInherited extends TestModel {
 
 class TestModelInheritedDuplicatingModelIdAndModelFields extends TestModel {
 	@ModelId
-	private int _idDuplicated;
+	private Integer _idDuplicated = 5;
 	
 	@ModelField("_name")
-	private Integer _anotherName;
+	private Integer _anotherName = 100;
 }
 
 @ModelName("ModelWithNames")
 class TestModelWithNames extends ModelImpl {
 	@ModelId("id")
-	private String _id;
+	private String _id = "5";
 	
 	@ModelField("name")
-	private String _name;
+	private String _name = "Alberto";
 }

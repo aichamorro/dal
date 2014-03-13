@@ -1,13 +1,15 @@
 package com.aichamorro.dal;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
+import java.util.Set;
 
 public interface Model {
 	Field getIdField();
-	HashMap<String, Field> getModelFields();
+	Set<String> modelFields();
 	Class<?> getTypeFor(String modelField);
 	String getModelName();
 	String getModelIdName();
 	Object getModelIdValue();
+	boolean set(String modelField, Object value);
+	Object get(String modelField);
 }
