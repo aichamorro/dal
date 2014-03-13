@@ -17,15 +17,13 @@ class ErrorDataQueryResult implements DataQueryResult {
 		return _errorMessage;
 	}
 
-	public DataQueryResultIterator<?> iterator(Class<?> forClass) {
+	public DataQueryResultIterator iterator(Class<? extends Model> forClass) {
 		assert false : "Don't try to iterate over an ErrorDataQueryResult!";
 	
-		return new DataQueryResultIterator<NullModel>() {
-			public NullModel next() {
+		return new DataQueryResultIterator() {
+			public Object next() {
 				return null;
 			}
 		};
 	}
 }
-
-abstract class NullModel implements Model {}

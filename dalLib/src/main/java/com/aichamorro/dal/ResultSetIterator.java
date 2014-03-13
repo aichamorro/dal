@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
 
-class ResultSetIterator<T extends Model> implements DataQueryResultIterator<T> {
+class ResultSetIterator implements DataQueryResultIterator {
 	private ResultSet _data;
 	private Class<? extends Model> _modelClass;
 	
@@ -13,12 +13,12 @@ class ResultSetIterator<T extends Model> implements DataQueryResultIterator<T> {
 		_modelClass = modelClass;
 	}
 	
-	public T next() {
-		T result = null;
+	public Object next() {
+		Model result = null;
 		
 		try {
 			if( _data.next() ) {
-				result = (T) _modelClass.newInstance();
+				result = (Model) _modelClass.newInstance();
 				
 				Set<String> modelFields = result.modelFields();
 				for( String modelField : modelFields ) {
@@ -32,6 +32,8 @@ class ResultSetIterator<T extends Model> implements DataQueryResultIterator<T> {
 						result.set(modelField, _data.getFloat(modelField));
 					}else if( type.equals("double") || type.equals("Double") ) {
 						result.set(modelField, _data.getDouble(modelField));
+					}else if( type.equals("long") || type.equals("Long") ) {
+						result.set(modelField, _data.getLong(modelField));
 					}else {
 						result.set(modelField, _data.getObject(modelField));
 					}

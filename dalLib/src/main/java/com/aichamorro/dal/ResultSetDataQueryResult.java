@@ -21,7 +21,7 @@ class ResultSetDataQueryResult implements DataQueryResult {
 		return null;
 	}
 
-	public DataQueryResultIterator<?> iterator(Class<?> forClass) {
+	public DataQueryResultIterator iterator(Class<? extends Model> forClass) {
 		return new ResultSetIterator(_resultSet, forClass);
 	}
 }
