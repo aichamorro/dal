@@ -2,6 +2,7 @@ package com.aichamorro.dal;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,5 +33,21 @@ public class ResultSetDataQueryResultTest extends TestCase {
 		
 		assertFalse(queryResult.isErrorResult());
 		assertNull(queryResult.iterator(TestModel.class).next());
+	}
+	
+	public void testOneRecordDataQueryResultSet() throws SQLException {
+		ResultSet set = mock(ResultSet.class);
+			when(set.next()).thenReturn(true);
+			when(set.getString("_id")).thenReturn("ACB001");
+			when(set.getString("_name")).thenReturn("Alberto");
+			
+		ResultSetDataQueryResult queryResult = new ResultSetDataQueryResult(set);
+			
+		TestModel expected = new TestModel("ACB001", "Alberto");
+		assertTrue(expected.equals(queryResult.iterator(TestModel.class).next()));
+
+		verify(set).next();
+		verify(set).getString("_id");
+		verify(set).getString("_name");
 	}
 }

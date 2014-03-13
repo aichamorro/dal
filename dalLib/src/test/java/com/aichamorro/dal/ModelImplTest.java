@@ -1,7 +1,5 @@
 package com.aichamorro.dal;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.Set;
 
 import junit.framework.Test;
@@ -90,14 +88,6 @@ public class ModelImplTest extends TestCase {
 		assertTrue(modelFields.contains("_id"));
 		assertTrue(modelFields.contains("_anotherId"));
 	}
-}
-
-class TestModel extends ModelImpl {
-	@ModelId
-	private String _id;
-	
-	@ModelField
-	private String _name;
 }
 
 class TestModelWithDuplicatedIdInTheClass extends ModelImpl {

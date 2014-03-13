@@ -67,7 +67,7 @@ abstract public class ModelImpl implements Model {
 			boolean isAccessible = field.isAccessible();
 			
 			field.setAccessible(true);
-			field.set(modelField, value);
+			field.set(this, value);
 			field.setAccessible(isAccessible);
 			
 			return true;
