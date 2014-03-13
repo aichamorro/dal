@@ -50,11 +50,8 @@ public class ModelStructureCacheImpl implements ModelStructureCache {
 					annotationValue = f.getAnnotation(ModelId.class).value();
 					
 					assert idField.isEmpty() : "You have more than one ModelId annotation in your model. That's incorrect.";
-					
 					if(idField.size() > 0) {
-						Field duplicatedIdField = idField.remove(0);
-						
-						modelFields.values().remove(duplicatedIdField);
+						idField.remove(0);
 					}
 						
 					idField.add(f);

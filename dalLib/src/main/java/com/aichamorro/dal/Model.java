@@ -8,4 +8,6 @@ public interface Model {
 	HashMap<String, Field> getModelFields();
 	Class<?> getTypeFor(String modelField);
 	String getModelName();
+	String getModelIdName();
+	Object getModelIdValue();
 }

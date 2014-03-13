@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import com.aichamorro.dal.Model;
 import com.aichamorro.dal.dataquery.annotations.ModelName;
 import com.aichamorro.dal.dataquery.annotations.ModelField;
 
@@ -16,13 +17,13 @@ public class DataQuery {
 	};
 	
 	QueryType _queryType;
-	Queryable<?> _payload;
+	Model _payload;
 	DataQueryStatement _where;
 	@SuppressWarnings("rawtypes")
 	Class _modelClass;
 	
 	@SuppressWarnings("rawtypes")
-	DataQuery(QueryType queryType, Class modelClass, Queryable object, DataQueryStatement where) {
+	DataQuery(QueryType queryType, Class modelClass, Model object, DataQueryStatement where) {
 		_queryType = queryType;
 		_payload = object;
 		_modelClass = modelClass;

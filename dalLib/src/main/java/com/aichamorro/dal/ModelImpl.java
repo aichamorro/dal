@@ -3,6 +3,9 @@ package com.aichamorro.dal;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
+import com.aichamorro.dal.dataquery.annotations.ModelField;
+import com.aichamorro.dal.dataquery.annotations.ModelId;
+
 abstract public class ModelImpl implements Model {
 	public ModelImpl() {
 	}
@@ -25,5 +28,34 @@ abstract public class ModelImpl implements Model {
 	
 	public String getModelName() {
 		return (String)ModelStructureCacheImpl.getInstance().getStructureForClass(getClass()).get(ModelStructureCache.ModelName);
+	}
+	
+	public String getModelIdName() {
+		Field idField = getIdField();
+		ModelId annotation = idField.getAnnotation(ModelId.class);
+		
+		return (annotation.value().equals("") ? idField.getName() : annotation.value());
+	}
+	
+	public Object getModelIdValue() {
+		Object result = null;
+		
+		try {
+			Field idField = getIdField();
+			boolean isAccessbile = idField.isAccessible();
+
+			idField.setAccessible(true);
+			result = idField.get(this);
+
+			idField.setAccessible(isAccessbile);
+		} catch (IllegalArgumentException e) {
+			assert false : "Exception: " + e.toString();
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			assert false : "Exception: " + e.toString();
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 }

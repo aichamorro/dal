@@ -78,12 +78,22 @@ public class ModelImplTest extends TestCase {
 		HashMap<String, Field> modelFields = model.getModelFields();
 		Set<String> keySet = modelFields.keySet();
 		
-		assertEquals(2, keySet.size());
-		assertFalse(keySet.contains("_id"));
+		assertEquals(3, keySet.size());
+		assertTrue(keySet.contains("_id"));
 		assertTrue(keySet.contains("_name"));
+		assertTrue(keySet.contains("_idDuplicated"));
 		assertEquals("_anotherName", modelFields.get("_name").getName());
 	}
 
+	public void testModelIdWhenAreDuplicatedInTheSameClass() {
+		Model model = new TestModelWithDuplicatedIdInTheClass();
+		
+		HashMap<String, Field> modelFields = model.getModelFields();
+		Set<String> keySet = modelFields.keySet();
+		assertEquals(2, keySet.size());
+		assertTrue(keySet.contains("_id"));
+		assertTrue(keySet.contains("_anotherId"));
+	}
 }
 
 class TestModel extends ModelImpl {
@@ -92,6 +102,22 @@ class TestModel extends ModelImpl {
 	
 	@ModelField
 	private String _name;
+}
+
+class TestModelWithDuplicatedIdInTheClass extends ModelImpl {
+	@ModelId
+	private String _id;
+	
+	@ModelId
+	private int _anotherId;
+}
+
+class TestModelWithDuplicatedModelFieldsInTheClass extends ModelImpl {
+	@ModelField
+	private String name;
+	
+	@ModelField("name")
+	private String differentName;
 }
 
 class TestModelInherited extends TestModel {
