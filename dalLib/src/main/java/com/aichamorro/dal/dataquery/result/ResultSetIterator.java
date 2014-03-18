@@ -1,5 +1,7 @@
 package com.aichamorro.dal.dataquery.result;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
@@ -36,7 +38,25 @@ class ResultSetIterator implements DataQueryResultIterator {
 						result.set(modelField, _data.getDouble(modelField));
 					}else if( type.equals("long") || type.equals("Long") ) {
 						result.set(modelField, _data.getLong(modelField));
-					}else {
+					}else if( type.equals("short") || type.equals("Short") ) {
+						result.set(modelField, _data.getShort(modelField));
+					}else if( type.equals("boolean") || type.equals("Boolean") ) {
+						result.set(modelField, _data.getBoolean(modelField));
+					}else if( type.equals("byte") || type.equals("Byte") ) {
+						result.set(modelField, _data.getByte(modelField));
+					}else if( type.equals("char") || type.equals("Char") ){
+						try {
+							Reader reader = _data.getCharacterStream(modelField);
+							assert (null != reader) : "There is no char data in the result set obtained";
+							
+							if( null != reader ) {
+								result.set(modelField, (char)reader.read());
+								reader.close();
+							}
+						} catch (IOException e) {
+							assert false : "Exception: " + e.toString();
+						}
+					}else{
 						result.set(modelField, _data.getObject(modelField));
 					}
 				}

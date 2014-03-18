@@ -4,6 +4,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -13,9 +15,6 @@ import junit.framework.TestSuite;
 
 import com.aichamorro.dal.dataquery.result.DataQueryResultIterator;
 import com.aichamorro.dal.dataquery.result.ResultSetDataQueryResult;
-import com.aichamorro.dal.model.ModelImpl;
-import com.aichamorro.dal.model.annotations.ModelField;
-import com.aichamorro.dal.model.annotations.ModelId;
 
 public class ResultSetDataQueryResultTest extends TestCase {
 
@@ -67,18 +66,25 @@ public class ResultSetDataQueryResultTest extends TestCase {
 		assertNull(iterator.next());
 	}
 	
-	public void testModelWithIntPrimitiveFields() throws SQLException {
+	public void testModelWithIntPrimitiveFields() throws SQLException, IOException {
+		Reader mockReader = mock(Reader.class);
+			when(mockReader.read()).thenReturn((int)'c');
+			
 		ResultSet set = mock(ResultSet.class);
 			when(set.next()).thenReturn(true, false);
 			when(set.getInt("int")).thenReturn(5);
 			when(set.getLong("long")).thenReturn(10L);
 			when(set.getFloat("float")).thenReturn(200.43f);
 			when(set.getDouble("double")).thenReturn(2.04321748363128976423);
+			when(set.getBoolean("boolean")).thenReturn(false);
+			when(set.getShort("short")).thenReturn((short)32760);
+			when(set.getByte("byte")).thenReturn((byte)128);
+			when(set.getCharacterStream("char")).thenReturn(mockReader);
 			
 		ResultSetDataQueryResult queryResult = new ResultSetDataQueryResult(set);
 		DataQueryResultIterator iterator = queryResult.iterator(PrimitiveFieldsModel.class);
 		
-		assertTrue(new PrimitiveFieldsModel(5, 10L, 200.43f, 2.04321748363128976423).equals(iterator.next()));
+		assertTrue(new PrimitiveFieldsModel(5, 10L, 200.43f, 2.04321748363128976423, false, (byte)128, (short)32760, 'c').equals(iterator.next()));
 		assertNull(iterator.next());
 	}
 	
