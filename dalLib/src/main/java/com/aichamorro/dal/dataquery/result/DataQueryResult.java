@@ -3,7 +3,7 @@ package com.aichamorro.dal.dataquery.result;
 import com.aichamorro.dal.model.Model;
 
 public interface DataQueryResult {
-	boolean isErrorResult();
+	boolean isError();
 	Object getError();
-	DataQueryResultIterator iterator(Class<? extends Model> forClass);
+	<T extends Model>DataQueryResultIterator<T> iterator(Class<T> forClass);
 }

@@ -8,7 +8,7 @@ import java.util.Set;
 
 import com.aichamorro.dal.model.Model;
 
-class ResultSetIterator implements DataQueryResultIterator {
+class ResultSetIterator<T extends Model> implements DataQueryResultIterator<T> {
 	private ResultSet _data;
 	private Class<? extends Model> _modelClass;
 	
@@ -17,12 +17,13 @@ class ResultSetIterator implements DataQueryResultIterator {
 		_modelClass = modelClass;
 	}
 	
-	public Object next() {
-		Model result = null;
+	@SuppressWarnings("unchecked")
+	public T next() {
+		T result = null;
 		
 		try {
 			if( _data.next() ) {
-				result = (Model) _modelClass.newInstance();
+				result = (T) _modelClass.newInstance();
 				
 				Set<String> modelFields = result.modelFields();
 				for( String modelField : modelFields ) {

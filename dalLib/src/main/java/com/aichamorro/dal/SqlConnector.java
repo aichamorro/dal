@@ -16,6 +16,7 @@ public class SqlConnector {
 	private String _username;
 	private String _password;
 	private Connection _connection;
+	private SQLException _error;
 
 	public SqlConnector(String host, String database, String username) {
 		this(host, database, username, "");
@@ -42,6 +43,7 @@ public class SqlConnector {
 		} catch (SQLException e) {
 			// TODO call a delegate or throw an exception perhaps?
 			assert false : "Do something with the error";
+			_error = e;
 		}
 	}
 
@@ -51,6 +53,9 @@ public class SqlConnector {
 
 	public DataQueryResult executeQuery(DataQuery dataQuery) {
 		assert _connection != null : "The connection has not been initialized!!!";
+		if( null != _error ) {
+			return new ErrorDataQueryResult(_error.toString());
+		}
 		
 		String sqlQuery = new SqlDataQueryAdapter().objectForQuery(dataQuery);
 		try {

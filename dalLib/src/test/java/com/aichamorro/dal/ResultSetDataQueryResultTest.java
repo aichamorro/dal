@@ -1,8 +1,8 @@
 package com.aichamorro.dal;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -13,6 +13,10 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import com.aichamorro.Drawing;
+import com.aichamorro.dal.dataquery.DataQuery;
+import com.aichamorro.dal.dataquery.DataQueryFactory;
+import com.aichamorro.dal.dataquery.result.DataQueryResult;
 import com.aichamorro.dal.dataquery.result.DataQueryResultIterator;
 import com.aichamorro.dal.dataquery.result.ResultSetDataQueryResult;
 
@@ -32,7 +36,7 @@ public class ResultSetDataQueryResultTest extends TestCase {
 			
 		ResultSetDataQueryResult queryResult = new ResultSetDataQueryResult(set);
 		
-		assertFalse(queryResult.isErrorResult());
+		assertFalse(queryResult.isError());
 		assertNull(queryResult.iterator(TestModel.class).next());
 	}
 	
@@ -59,7 +63,7 @@ public class ResultSetDataQueryResultTest extends TestCase {
 			when(set.getString("_name")).thenReturn("Alberto", "Rocio");
 			
 		ResultSetDataQueryResult queryResult = new ResultSetDataQueryResult(set);
-		DataQueryResultIterator iterator = queryResult.iterator(TestModel.class);
+		DataQueryResultIterator<TestModel> iterator = queryResult.iterator(TestModel.class);
 		
 		assertTrue(new TestModel("ACB001", "Alberto").equals(iterator.next()));
 		assertTrue(new TestModel("ACB002", "Rocio").equals(iterator.next()));
@@ -82,7 +86,7 @@ public class ResultSetDataQueryResultTest extends TestCase {
 			when(set.getCharacterStream("char")).thenReturn(mockReader);
 			
 		ResultSetDataQueryResult queryResult = new ResultSetDataQueryResult(set);
-		DataQueryResultIterator iterator = queryResult.iterator(PrimitiveFieldsModel.class);
+		DataQueryResultIterator<PrimitiveFieldsModel> iterator = queryResult.iterator(PrimitiveFieldsModel.class);
 		
 		assertTrue(new PrimitiveFieldsModel(5, 10L, 200.43f, 2.04321748363128976423, false, (byte)128, (short)32760, 'c').equals(iterator.next()));
 		assertNull(iterator.next());
@@ -95,8 +99,19 @@ public class ResultSetDataQueryResultTest extends TestCase {
 			when(set.getObject("Object")).thenReturn(instance);
 			
 		ResultSetDataQueryResult queryResult = new ResultSetDataQueryResult(set);
-		DataQueryResultIterator iterator = queryResult.iterator(PrimitiveFieldsModel.class);
+		DataQueryResultIterator<PrimitiveFieldsModel> iterator = queryResult.iterator(PrimitiveFieldsModel.class);
 		
-		assertSame(instance, ((PrimitiveFieldsModel)iterator.next()).object);
+		assertSame(instance, iterator.next().object);
+	}
+	
+	public void testTheRealThing() {
+		SqlConnector connector = new SqlConnector("localhost:3306", "rocxis", "rocxis");
+		DataQuery query = DataQueryFactory.select(Drawing.class).createQuery();
+		DataQueryResult result = connector.executeQuery(query);
+		DataQueryResultIterator<Drawing> iterator = result.iterator(Drawing.class);
+		assertFalse(result.isError());
+		assertEquals(new Drawing(1, "Cuadro 1"), iterator.next());
+		assertEquals(new Drawing(2, "Cuadro Rocio"), iterator.next());
+		assertNull(iterator.next());
 	}
 }

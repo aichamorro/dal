@@ -81,7 +81,7 @@ public class MySqlDataConnectorTest extends TestCase {
 		DataQuery dataQuery = DataQueryFactory.select(TestModel.class).createQuery();
 		SqlConnector connector = new SqlConnector("localhost:8888", "sampleDatabase", "test", "");
 		DataQueryResult result = connector.executeQuery(dataQuery);
-		DataQueryResultIterator iterator = result.iterator(TestModel.class);
+		DataQueryResultIterator<TestModel> iterator = result.iterator(TestModel.class);
 		
 		PowerMockito.verifyStatic();
 		DriverManager.getConnection("jdbc:mysql://localhost:8888/sampleDatabase", "test", "");
@@ -89,13 +89,32 @@ public class MySqlDataConnectorTest extends TestCase {
 		verify(mockConnection).createStatement();
 		verify(mockStatement).executeQuery("SELECT * FROM TestModel");
 		
-		assertFalse(result.isErrorResult());
+		assertFalse(result.isError());
 		assertEquals(new TestModel("ACB001", "Alberto"), iterator.next());
 		assertEquals(new TestModel("ACB002", "Paul"), iterator.next());
 		assertNull(iterator.next());
 	}
 	
-	public void testErrorDataQueryResult() {
-		fail("Not Implemented");
-	}
+	public void testErrorDataQueryResult() throws SQLException {
+		PowerMockito.mockStatic(DriverManager.class);
+		Connection mockConnection = mock(Connection.class);
+		Statement mockStatement = mock(Statement.class);
+		
+		when(DriverManager.getConnection("jdbc:mysql://localhost:8888/sampleDatabase", "test", "")).thenReturn(mockConnection);
+		when(mockConnection.createStatement()).thenReturn(mockStatement);
+		when(mockStatement.executeQuery("SELECT * FROM TestModel")).thenThrow(new SQLException("An exception occurred"));
+		
+		DataQuery dataQuery = DataQueryFactory.select(TestModel.class).createQuery();
+		SqlConnector connector = new SqlConnector("localhost:8888", "sampleDatabase", "test", "");
+		DataQueryResult result = connector.executeQuery(dataQuery);
+		DataQueryResultIterator<TestModel> iterator = result.iterator(TestModel.class);
+		
+		PowerMockito.verifyStatic();
+		DriverManager.getConnection("jdbc:mysql://localhost:8888/sampleDatabase", "test", "");
+		
+		verify(mockConnection).createStatement();
+		verify(mockStatement).executeQuery("SELECT * FROM TestModel");
+		
+		assertTrue(result.isError());
+		assertNull(iterator.next());	}
 }

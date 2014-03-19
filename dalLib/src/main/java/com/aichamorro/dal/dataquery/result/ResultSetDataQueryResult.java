@@ -11,17 +11,17 @@ public class ResultSetDataQueryResult implements DataQueryResult {
 		_resultSet = resultSet;
 	}
 
-	public boolean isErrorResult() {
+	public boolean isError() {
 		return false;
 	}
 
 	public Object getError() {
-		assert true == isErrorResult() : "This is not an error. Hence, you cannot retrieve the error object";
+		assert true == isError() : "This is not an error. Hence, you cannot retrieve the error object";
 		
 		return null;
 	}
 
-	public DataQueryResultIterator iterator(Class<? extends Model> forClass) {
-		return new ResultSetIterator(_resultSet, forClass);
+	public <T extends Model> DataQueryResultIterator<T> iterator(Class<T> forClass) {
+		return new ResultSetIterator<T>(_resultSet, forClass);
 	}
 }

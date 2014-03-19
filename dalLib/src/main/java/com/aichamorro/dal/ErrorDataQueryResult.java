@@ -11,7 +11,7 @@ class ErrorDataQueryResult implements DataQueryResult {
 		_errorMessage = errorMessage;
 	}
 
-	public boolean isErrorResult() {
+	public boolean isError() {
 		return true;
 	}
 
@@ -19,11 +19,21 @@ class ErrorDataQueryResult implements DataQueryResult {
 		return _errorMessage;
 	}
 
-	public DataQueryResultIterator iterator(Class<? extends Model> forClass) {
+//	public DataQueryResultIterator iterator(Class<? extends Model> forClass) {
+//		assert false : "Don't try to iterate over an ErrorDataQueryResult!";
+//	
+//		return new DataQueryResultIterator() {
+//			public Object next() {
+//				return null;
+//			}
+//		};
+//	}
+
+	public <T extends Model> DataQueryResultIterator<T> iterator(Class<T> forClass) {
 		assert false : "Don't try to iterate over an ErrorDataQueryResult!";
 	
-		return new DataQueryResultIterator() {
-			public Object next() {
+		return new DataQueryResultIterator<T>() {
+			public T next() {
 				return null;
 			}
 		};

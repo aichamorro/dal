@@ -1,5 +1,7 @@
 package com.aichamorro.dal.dataquery.result;
 
-public interface DataQueryResultIterator {
-	public Object next();
+import com.aichamorro.dal.model.Model;
+
+public interface DataQueryResultIterator<T extends Model> {
+	public T next();
 }
