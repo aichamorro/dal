@@ -2,8 +2,8 @@ package com.aichamorro.dal;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import com.aichamorro.dal.dataquery.DataQuery;
 import com.aichamorro.dal.dataquery.adapters.SqlDataQueryAdapter;
@@ -59,9 +59,12 @@ public class SqlConnector {
 		
 		String sqlQuery = new SqlDataQueryAdapter().objectForQuery(dataQuery);
 		try {
-			ResultSet resultSet = _connection.createStatement().executeQuery(sqlQuery);
-			
-			return new ResultSetDataQueryResult(resultSet);
+			Statement statement = _connection.createStatement();
+			if( statement.execute(sqlQuery) ) {
+				return new ResultSetDataQueryResult(statement.getResultSet());
+			}else{
+				return EmptyOkDataQueryResult.getInstance();
+			}
 		} catch (SQLException e) {
 			assert false : "Exception occurred: " + e.toString();
 		

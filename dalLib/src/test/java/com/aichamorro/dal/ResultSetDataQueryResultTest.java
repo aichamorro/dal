@@ -103,15 +103,4 @@ public class ResultSetDataQueryResultTest extends TestCase {
 		
 		assertSame(instance, iterator.next().object);
 	}
-	
-	public void testTheRealThing() {
-		SqlConnector connector = new SqlConnector("localhost:3306", "rocxis", "rocxis");
-		DataQuery query = DataQueryFactory.select(Drawing.class).createQuery();
-		DataQueryResult result = connector.executeQuery(query);
-		DataQueryResultIterator<Drawing> iterator = result.iterator(Drawing.class);
-		assertFalse(result.isError());
-		assertEquals(new Drawing(1, "Cuadro 1"), iterator.next());
-		assertEquals(new Drawing(2, "Cuadro Rocio"), iterator.next());
-		assertNull(iterator.next());
-	}
 }

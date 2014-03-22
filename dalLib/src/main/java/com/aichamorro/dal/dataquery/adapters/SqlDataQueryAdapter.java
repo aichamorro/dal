@@ -32,11 +32,13 @@ public class SqlDataQueryAdapter implements DataQueryAdapter<String> {
 		}
 
 		public void setModel(String modelName) {
+			String sqlModelName = '`' + modelName + '`';
+			
 			switch(_queryType) {
 			case SELECT: result += " *";
-			case DELETE: result += SqlStatements.FROM + modelName; break;
-			case UPDATE: result += " " + modelName; break;
-			case INSERT: result += SqlStatements.INTO + modelName; break;
+			case DELETE: result += SqlStatements.FROM + sqlModelName; break;
+			case UPDATE: result += " " + sqlModelName; break;
+			case INSERT: result += SqlStatements.INTO + sqlModelName; break;
 			default:
 			}
 		}

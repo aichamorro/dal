@@ -42,61 +42,61 @@ public class SqlDataQueryAdapterTest extends TestCase{
 	public void testSelectQueryWithNoFilterReturnsSelectAllStatement() {
 		DataQueryFactory query = DataQueryFactory.select(object.getClass());
 		
-		assertEquals("SELECT * FROM Queryable", adapter.objectForQuery(query.createQuery())); 
+		assertEquals("SELECT * FROM `Queryable`", adapter.objectForQuery(query.createQuery())); 
 	}
 	
 	public void testSelectQueryWithFilterReturnsSelectWithWhereStatement() {
 		DataQuery query = DataQueryFactory.select(object.getClass()).where("id='5'").createQuery();
 		
-		assertEquals("SELECT * FROM Queryable WHERE id='5'", adapter.objectForQuery(query));
+		assertEquals("SELECT * FROM `Queryable` WHERE id='5'", adapter.objectForQuery(query));
 	}
 	
 	public void testSelectQueryWithTwoFiltersUsingAndConcatenation() {
 		DataQuery query = DataQueryFactory.select(object.getClass()).where(and("id='5'", "name='Alberto'")).createQuery();	
 		
-		assertEquals("SELECT * FROM Queryable WHERE (id='5' AND name='Alberto')", adapter.objectForQuery(query));
+		assertEquals("SELECT * FROM `Queryable` WHERE (id='5' AND name='Alberto')", adapter.objectForQuery(query));
 	}
 	
 	public void testSelectQueryWithTwoFiltersUsingOrConcatenation() {
 		DataQuery query = DataQueryFactory.select(object.getClass()).where(or("id='5'", "name='Alberto'")).createQuery();
 		
-		assertEquals("SELECT * FROM Queryable WHERE (id='5' OR name='Alberto')", adapter.objectForQuery(query));
+		assertEquals("SELECT * FROM `Queryable` WHERE (id='5' OR name='Alberto')", adapter.objectForQuery(query));
 	}
 	
 	public void testSelectQueryWithMoreThanTwoFiltersUsingSeveralConcatenators() {
 		DataQuery query = DataQueryFactory.select(object.getClass()).where(or(and("id='5'", "name='Alberto'"),statement("surname='Chamorro'"))).createQuery();
 		
-		assertEquals("SELECT * FROM Queryable WHERE ((id='5' AND name='Alberto') OR surname='Chamorro')", adapter.objectForQuery(query));
+		assertEquals("SELECT * FROM `Queryable` WHERE ((id='5' AND name='Alberto') OR surname='Chamorro')", adapter.objectForQuery(query));
 	}
 	
 	public void testSelectQueryWithFilterGroupsNotInvolvingWhere() {
 		DataQuery query = DataQueryFactory.select(object.getClass()).where(and(statement("id='5'"), or("name='Alberto'", "surname='Chamorro'"))).createQuery();
 		
-		assertEquals("SELECT * FROM Queryable WHERE (id='5' AND (name='Alberto' OR surname='Chamorro'))", adapter.objectForQuery(query));
+		assertEquals("SELECT * FROM `Queryable` WHERE (id='5' AND (name='Alberto' OR surname='Chamorro'))", adapter.objectForQuery(query));
 	}
 	
 	public void testSelectQueryWithFilterGroups() {
 		DataQuery query = DataQueryFactory.select(object.getClass()).where(or(and("id='5'", "name='Alberto'"), statement("surname='Chamorro'"))).createQuery();
 
-		assertEquals("SELECT * FROM Queryable WHERE ((id='5' AND name='Alberto') OR surname='Chamorro')", adapter.objectForQuery(query));
+		assertEquals("SELECT * FROM `Queryable` WHERE ((id='5' AND name='Alberto') OR surname='Chamorro')", adapter.objectForQuery(query));
 	}
 	
 	public void testSimpleDeleteQuery() {
 		DataQuery query = DataQueryFactory.delete(new MockModelForInsert()).createQuery();
 		
-		assertEquals("DELETE FROM Queryable WHERE idMock='5'", adapter.objectForQuery(query));
+		assertEquals("DELETE FROM `Queryable` WHERE idMock='5'", adapter.objectForQuery(query));
 	}
 	
 	public void testSimpleInsertQuery() {
 		DataQuery query = DataQueryFactory.insert(new MockModelForInsert()).createQuery();
 		
-		assertEquals("INSERT INTO Queryable(name,surname,age) VALUES('Alberto','Chamorro','32')", adapter.objectForQuery(query));
+		assertEquals("INSERT INTO `Queryable`(name,surname,age) VALUES('Alberto','Chamorro','32')", adapter.objectForQuery(query));
 	}
 	
 	public void testUpdateSimpleQuery() {
 		DataQuery query = DataQueryFactory.update(new MockModelForInsert()).createQuery();
 		
-		assertEquals("UPDATE Queryable SET name='Alberto',surname='Chamorro',age='32' WHERE idMock='5'", adapter.objectForQuery(query));
+		assertEquals("UPDATE `Queryable` SET name='Alberto',surname='Chamorro',age='32' WHERE idMock='5'", adapter.objectForQuery(query));
 	}
 }
 

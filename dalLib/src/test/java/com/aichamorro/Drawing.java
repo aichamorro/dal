@@ -28,4 +28,12 @@ public class Drawing extends ModelImpl {
 		
 		return (compare.id == this.id && compare.name.equals(this.name));
 	}
+
+	public long getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
 }

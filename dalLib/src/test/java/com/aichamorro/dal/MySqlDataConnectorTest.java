@@ -17,6 +17,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit3.PowerMockSuite;
 
+import com.aichamorro.Drawing;
 import com.aichamorro.dal.dataquery.DataQuery;
 import com.aichamorro.dal.dataquery.DataQueryFactory;
 import com.aichamorro.dal.dataquery.result.DataQueryResult;
@@ -73,7 +74,8 @@ public class MySqlDataConnectorTest extends TestCase {
 		
 		when(DriverManager.getConnection("jdbc:mysql://localhost:8888/sampleDatabase", "test", "")).thenReturn(mockConnection);
 		when(mockConnection.createStatement()).thenReturn(mockStatement);
-		when(mockStatement.executeQuery("SELECT * FROM TestModel")).thenReturn(mockResultSet);
+		when(mockStatement.execute("SELECT * FROM `TestModel`")).thenReturn(true);
+		when(mockStatement.getResultSet()).thenReturn(mockResultSet);
 		when(mockResultSet.next()).thenReturn(true, true, false);
 		when(mockResultSet.getString("_id")).thenReturn(FAKE_ID_1, FAKE_ID_2);
 		when(mockResultSet.getString("_name")).thenReturn("Alberto", "Paul");
@@ -87,7 +89,7 @@ public class MySqlDataConnectorTest extends TestCase {
 		DriverManager.getConnection("jdbc:mysql://localhost:8888/sampleDatabase", "test", "");
 		
 		verify(mockConnection).createStatement();
-		verify(mockStatement).executeQuery("SELECT * FROM TestModel");
+		verify(mockStatement).execute("SELECT * FROM `TestModel`");
 		
 		assertFalse(result.isError());
 		assertEquals(new TestModel("ACB001", "Alberto"), iterator.next());
@@ -102,7 +104,7 @@ public class MySqlDataConnectorTest extends TestCase {
 		
 		when(DriverManager.getConnection("jdbc:mysql://localhost:8888/sampleDatabase", "test", "")).thenReturn(mockConnection);
 		when(mockConnection.createStatement()).thenReturn(mockStatement);
-		when(mockStatement.executeQuery("SELECT * FROM TestModel")).thenThrow(new SQLException("An exception occurred"));
+		when(mockStatement.execute("SELECT * FROM `TestModel`")).thenThrow(new SQLException("An exception occurred"));
 		
 		DataQuery dataQuery = DataQueryFactory.select(TestModel.class).createQuery();
 		SqlConnector connector = new SqlConnector("localhost:8888", "sampleDatabase", "test", "");
@@ -113,8 +115,47 @@ public class MySqlDataConnectorTest extends TestCase {
 		DriverManager.getConnection("jdbc:mysql://localhost:8888/sampleDatabase", "test", "");
 		
 		verify(mockConnection).createStatement();
-		verify(mockStatement).executeQuery("SELECT * FROM TestModel");
+		verify(mockStatement).execute("SELECT * FROM `TestModel`");
 		
 		assertTrue(result.isError());
-		assertNull(iterator.next());	}
+		assertNull(iterator.next());	
+	}
+	
+	public void testCrudProcess() {
+		SqlConnector connector = new SqlConnector("localhost:3306", "rocxis", "rocxis");
+		Drawing drawing = new Drawing(-1, "Alberto");
+		DataQuery queryInsert = DataQueryFactory.insert(drawing).createQuery();
+		DataQuery querySelect = DataQueryFactory.select(Drawing.class).where("`name`='Alberto'").createQuery();
+		DataQuery querySelectUpdated = DataQueryFactory.select(Drawing.class).where("`name`='Alberto Chamorro'").createQuery();
+		
+		DataQueryResult result = connector.executeQuery(queryInsert);
+			assertFalse(result.isError());
+			assertNull(result.iterator(Drawing.class).next());
+		
+		result = connector.executeQuery(querySelect);
+			assertFalse(result.isError());
+		
+		Drawing selectResult = result.iterator(Drawing.class).next();
+			assertNotNull(selectResult);
+			assertTrue(-1 != selectResult.getId());
+			assertEquals("Alberto", selectResult.getName());
+		
+		selectResult.set("name", "Alberto Chamorro");
+		DataQuery queryUpdate = DataQueryFactory.update(selectResult).createQuery();
+		result = connector.executeQuery(queryUpdate);
+			assertFalse(result.isError());
+			
+		result = connector.executeQuery(querySelectUpdated);
+			assertFalse(result.isError());
+			assertNotNull(result.iterator(Drawing.class).next());
+			
+		DataQuery queryDelete = DataQueryFactory.delete(selectResult).createQuery();
+		result = connector.executeQuery(queryDelete);
+			assertFalse(result.isError());
+			assertNull(result.iterator(Drawing.class).next());
+			
+		result = connector.executeQuery(querySelectUpdated);
+			assertFalse(result.isError());
+			assertNull(result.iterator(Drawing.class).next());
+	}
 }

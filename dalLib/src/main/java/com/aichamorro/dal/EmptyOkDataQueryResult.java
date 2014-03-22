@@ -4,24 +4,27 @@ import com.aichamorro.dal.dataquery.result.DataQueryResult;
 import com.aichamorro.dal.dataquery.result.DataQueryResultIterator;
 import com.aichamorro.dal.model.Model;
 
-class ErrorDataQueryResult implements DataQueryResult {
-	private String _errorMessage;
+public class EmptyOkDataQueryResult implements DataQueryResult {
 
-	public ErrorDataQueryResult(String errorMessage) {
-		_errorMessage = errorMessage;
+	static final private class InstanceHolder {
+		static private final EmptyOkDataQueryResult _instance = new EmptyOkDataQueryResult();		
 	}
-
+	
+	private EmptyOkDataQueryResult() {}
+	
+	static public final EmptyOkDataQueryResult getInstance() {
+		return InstanceHolder._instance;
+	}
+	
 	public boolean isError() {
-		return true;
+		return false;
 	}
 
 	public Object getError() {
-		return _errorMessage;
+		return null;
 	}
 
 	public <T extends Model> DataQueryResultIterator<T> iterator(Class<T> forClass) {
-		assert false : "Don't try to iterate over an ErrorDataQueryResult!";
-
 		return (DataQueryResultIterator<T>) EmptyDataQueryResultIterator.getInstance();
 	}
 }
