@@ -6,7 +6,7 @@ public class DataQueryFactory {
 	private DataQuery.QueryType _type;
 	private Class<?> _objectClass;
 	private Model _payload;
-	private DataQueryStatement _where;
+	private DataQueryFilter _where;
 	
 	private DataQueryFactory(DataQuery.QueryType type, Class<?> objectClass) {
 		this(type, objectClass, null);
@@ -23,13 +23,13 @@ public class DataQueryFactory {
 	}
 	
 	public DataQueryFactory where(String statement) {
-		_where = DataQueryStatementFactory.where(statement);
+		_where = DataQueryFilterFactory.where(statement);
 		
 		return this;
 	}
 	
-	public DataQueryFactory where(DataQueryStatement statement) {
-		_where = DataQueryStatementFactory.where(statement);
+	public DataQueryFactory where(DataQueryFilter statement) {
+		_where = DataQueryFilterFactory.where(statement);
 		
 		return this;
 	}

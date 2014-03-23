@@ -1,15 +1,15 @@
 package com.aichamorro.dal.dataquery;
 
-public class SingleDataQueryStatement extends DataQueryStatement {
+class SingleDataQueryFilter extends DataQueryFilter {
 	private String _statement;
-	DataQueryStatementType _type;
+	DataQueryFilterType _type;
 	
-	public SingleDataQueryStatement(DataQueryStatementType type, String statement) {
+	public SingleDataQueryFilter(DataQueryFilterType type, String statement) {
 		_type = type;
 		_statement = statement;
 	}
 	
-	public DataQueryStatementType getType() {
+	public DataQueryFilterType getType() {
 		return _type;
 	}
 

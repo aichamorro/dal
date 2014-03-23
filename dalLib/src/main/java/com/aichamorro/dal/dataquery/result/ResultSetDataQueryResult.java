@@ -2,9 +2,11 @@ package com.aichamorro.dal.dataquery.result;
 
 import java.sql.ResultSet;
 
+import com.aichamorro.dal.dataquery.result.iterators.DataQueryResultIterator;
+import com.aichamorro.dal.dataquery.result.iterators.ResultSetIterator;
 import com.aichamorro.dal.model.Model;
 
-public class ResultSetDataQueryResult implements DataQueryResult {
+final public class ResultSetDataQueryResult implements DataQueryResult {
 	private ResultSet _resultSet;
 
 	public ResultSetDataQueryResult(ResultSet resultSet) {

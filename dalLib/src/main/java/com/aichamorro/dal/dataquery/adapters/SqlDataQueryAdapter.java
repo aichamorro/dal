@@ -5,7 +5,7 @@ import java.util.HashMap;
 import com.aichamorro.dal.dataquery.DataQuery;
 import com.aichamorro.dal.dataquery.DataQuery.QueryType;
 import com.aichamorro.dal.dataquery.sql.SqlStatements;
-import com.aichamorro.dal.dataquery.DataQueryStatement;
+import com.aichamorro.dal.dataquery.DataQueryFilter;
 import com.aichamorro.dal.dataquery.DataQueryVisitor;
 
 public class SqlDataQueryAdapter implements DataQueryAdapter<String> {
@@ -101,10 +101,10 @@ public class SqlDataQueryAdapter implements DataQueryAdapter<String> {
 			return result;
 		}
 		
-		public void addFilter(DataQueryStatement.Iterator iterator) {
+		public void addFilter(DataQueryFilter.Iterator iterator) {
 			assert iterator.hasNext() : "WTF? Emtpy iterator? Really?";
 			
-			result += SqlStatements.WHERE + new SqlDataQueryStatementAdapter().statementAdapter(iterator.next());
+			result += SqlStatements.WHERE + new SqlDataQueryFilterAdapter().statementAdapter(iterator.next());
 		}
 	}
 }

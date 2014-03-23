@@ -1,11 +1,11 @@
 package com.aichamorro.dal.dataquery;
 
-public class ComposedDataQueryStatement extends DataQueryStatement {
+class ComposedDataQueryFilter extends DataQueryFilter {
 
-	private DataQueryStatement[] _statements;
-	private DataQueryStatementType _type;
+	private DataQueryFilter[] _statements;
+	private DataQueryFilterType _type;
 
-	public ComposedDataQueryStatement(DataQueryStatementType type, DataQueryStatement... statements) {
+	public ComposedDataQueryFilter(DataQueryFilterType type, DataQueryFilter... statements) {
 		_type = type;
 		_statements = statements;
 	}
@@ -13,7 +13,7 @@ public class ComposedDataQueryStatement extends DataQueryStatement {
 	public void visit(DataQueryStatementVisitor visitor) {
 	}
 
-	public DataQueryStatementType getType() {
+	public DataQueryFilterType getType() {
 		return _type;
 	}
 

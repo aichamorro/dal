@@ -17,8 +17,8 @@ import com.aichamorro.Drawing;
 import com.aichamorro.dal.dataquery.DataQuery;
 import com.aichamorro.dal.dataquery.DataQueryFactory;
 import com.aichamorro.dal.dataquery.result.DataQueryResult;
-import com.aichamorro.dal.dataquery.result.DataQueryResultIterator;
 import com.aichamorro.dal.dataquery.result.ResultSetDataQueryResult;
+import com.aichamorro.dal.dataquery.result.iterators.DataQueryResultIterator;
 
 public class ResultSetDataQueryResultTest extends TestCase {
 

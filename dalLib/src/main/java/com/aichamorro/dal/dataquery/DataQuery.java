@@ -18,12 +18,12 @@ public class DataQuery {
 	
 	QueryType _queryType;
 	Model _payload;
-	DataQueryStatement _where;
+	DataQueryFilter _where;
 	@SuppressWarnings("rawtypes")
 	Class _modelClass;
 	
 	@SuppressWarnings("rawtypes")
-	DataQuery(QueryType queryType, Class modelClass, Model object, DataQueryStatement where) {
+	DataQuery(QueryType queryType, Class modelClass, Model object, DataQueryFilter where) {
 		_queryType = queryType;
 		_payload = object;
 		_modelClass = modelClass;

@@ -1,11 +1,11 @@
 package com.aichamorro.dal.dataquery.adapters;
 
-import com.aichamorro.dal.dataquery.DataQueryStatement;
-import com.aichamorro.dal.dataquery.DataQueryStatement.Iterator;
+import com.aichamorro.dal.dataquery.DataQueryFilter;
+import com.aichamorro.dal.dataquery.DataQueryFilter.Iterator;
 import com.aichamorro.dal.dataquery.sql.SqlStatements;
 
-public class SqlDataQueryStatementAdapter {
-	public String statementAdapter(DataQueryStatement stmnt) {
+class SqlDataQueryFilterAdapter {
+	public String statementAdapter(DataQueryFilter stmnt) {
 		switch( stmnt.getType() ) {
 		case AND:
 			return composeString("", stmnt, SqlStatements.AND);
@@ -19,7 +19,7 @@ public class SqlDataQueryStatementAdapter {
 		}
 	}
 
-	private String composeString(String prefix, DataQueryStatement stmnt, String suffix ) {
+	private String composeString(String prefix, DataQueryFilter stmnt, String suffix ) {
 		assert null != prefix : "The prefix string must be not null, use an empty string instead";
 		assert null != suffix : "The postfix string must be not null, use an empty string instead";
 		
@@ -27,7 +27,7 @@ public class SqlDataQueryStatementAdapter {
 
 		Iterator iterator = stmnt.iterator();
 		while(iterator.hasNext()) {
-			DataQueryStatement subStatement = iterator.next();
+			DataQueryFilter subStatement = iterator.next();
 			
 			result += prefix + statementAdapter(subStatement) + suffix;
 		}

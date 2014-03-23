@@ -1,4 +1,4 @@
-package com.aichamorro.dal.dataquery.result;
+package com.aichamorro.dal.dataquery.result.iterators;
 
 import com.aichamorro.dal.model.Model;
 

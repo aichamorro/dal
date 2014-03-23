@@ -1,8 +1,8 @@
 package com.aichamorro.dal.dataquery;
 
-import static com.aichamorro.dal.dataquery.DataQueryStatementFactory.and;
-import static com.aichamorro.dal.dataquery.DataQueryStatementFactory.or;
-import static com.aichamorro.dal.dataquery.DataQueryStatementFactory.statement;
+import static com.aichamorro.dal.dataquery.DataQueryFilterFactory.and;
+import static com.aichamorro.dal.dataquery.DataQueryFilterFactory.or;
+import static com.aichamorro.dal.dataquery.DataQueryFilterFactory.statement;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;

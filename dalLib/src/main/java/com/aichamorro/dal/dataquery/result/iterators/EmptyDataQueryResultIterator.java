@@ -1,9 +1,8 @@
-package com.aichamorro.dal;
+package com.aichamorro.dal.dataquery.result.iterators;
 
-import com.aichamorro.dal.dataquery.result.DataQueryResultIterator;
 import com.aichamorro.dal.model.Model;
 
-class EmptyDataQueryResultIterator implements DataQueryResultIterator<Model> {
+public class EmptyDataQueryResultIterator implements DataQueryResultIterator<Model> {
 
 	static private class InstanceHolder {
 		static private final EmptyDataQueryResultIterator _instance = new EmptyDataQueryResultIterator();

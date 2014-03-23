@@ -1,4 +1,4 @@
-package com.aichamorro.dal.dataquery.result;
+package com.aichamorro.dal.dataquery.result.iterators;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -8,7 +8,7 @@ import java.util.Set;
 
 import com.aichamorro.dal.model.Model;
 
-class ResultSetIterator<T extends Model> implements DataQueryResultIterator<T> {
+final public class ResultSetIterator<T extends Model> implements DataQueryResultIterator<T> {
 	private ResultSet _data;
 	private Class<? extends Model> _modelClass;
 	
