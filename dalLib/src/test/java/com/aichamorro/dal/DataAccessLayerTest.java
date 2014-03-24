@@ -2,13 +2,11 @@ package com.aichamorro.dal;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import org.mockito.Mockito;
-import org.mockito.stubbing.Answer;
-
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
+import org.mockito.Mockito;
 
 import com.aichamorro.dal.dataquery.DataQuery;
 import com.aichamorro.dal.dataquery.DataQueryFactory;
