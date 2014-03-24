@@ -11,20 +11,6 @@ public class DataAccessLayer {
 		_datasources = new HashMap<String, DataSource>();
 	}
 
-//	public boolean execute(DataQuery query, String dataSource) {
-//		assert query.getType() != -1 : "Query type not set";
-//		assert _datasources.containsKey(dataSource) : "DataSource used not valid";
-//
-//		if( query.getType() == -1 ||  !_datasources.containsKey(dataSource) ) {
-//			return false;
-//		}
-//
-//		DataSource ds = _datasources.get(dataSource);
-//		ds.executeQuery(query);
-//
-//		return true;
-//	}
-
 	public DataSource on(String dataSource) {
 		assert _datasources.containsKey(dataSource) : "DataSource used not valid";
 
