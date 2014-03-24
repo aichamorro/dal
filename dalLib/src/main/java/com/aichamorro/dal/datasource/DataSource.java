@@ -1,7 +1,8 @@
 package com.aichamorro.dal.datasource;
 
 import com.aichamorro.dal.dataquery.DataQuery;
+import com.aichamorro.dal.dataquery.result.DataQueryResult;
 
-abstract public class DataSource {
-	abstract public boolean executeQuery(DataQuery query);
+public interface DataSource {
+	DataQueryResult executeQuery(DataQuery query);
 }

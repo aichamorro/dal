@@ -17,15 +17,15 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit3.PowerMockSuite;
 
 import com.aichamorro.Drawing;
-import com.aichamorro.dal.connectors.SqlConnector;
 import com.aichamorro.dal.dataquery.DataQuery;
 import com.aichamorro.dal.dataquery.DataQueryFactory;
 import com.aichamorro.dal.dataquery.adapters.SqlDataQueryAdapter;
 import com.aichamorro.dal.dataquery.result.DataQueryResult;
 import com.aichamorro.dal.dataquery.result.iterators.DataQueryResultIterator;
+import com.aichamorro.dal.datasource.SqlDataSource;
 import com.mysql.jdbc.Connection;
 
-@PrepareForTest(SqlConnector.class)
+@PrepareForTest(SqlDataSource.class)
 public class MySqlDataConnectorTest extends TestCase {
 	final SqlDataQueryAdapter queryAdapter = new SqlDataQueryAdapter();
 
@@ -45,7 +45,7 @@ public class MySqlDataConnectorTest extends TestCase {
 	public void testCreateMysqlConectionWithSpecificPort() throws SQLException {
 		PowerMockito.mockStatic(DriverManager.class);
 
-		new SqlConnector("localhost:3333", "sampleDatabase", "test", "", queryAdapter);
+		new SqlDataSource("localhost:3333", "sampleDatabase", "test", "", queryAdapter);
 		
 		PowerMockito.verifyStatic();
 		DriverManager.getConnection("jdbc:mysql://localhost:3333/sampleDatabase", "test", "");
@@ -57,7 +57,7 @@ public class MySqlDataConnectorTest extends TestCase {
 		
 		when(DriverManager.getConnection(Mockito.anyString(), Mockito.anyString(), Mockito.anyString())).thenReturn(mockConnection);
 		
-		SqlConnector connector = new SqlConnector("localhost:8888", "sampleDatabase", "test", "", queryAdapter);
+		SqlDataSource connector = new SqlDataSource("localhost:8888", "sampleDatabase", "test", "", queryAdapter);
 			connector.close();
 			
 		PowerMockito.verifyStatic();
@@ -76,7 +76,7 @@ public class MySqlDataConnectorTest extends TestCase {
 		when(mockStatement.execute("SELECT * FROM `TestModel`")).thenThrow(new SQLException("An exception occurred"));
 		
 		DataQuery dataQuery = DataQueryFactory.select(TestModel.class).createQuery();
-		SqlConnector connector = new SqlConnector("localhost:8888", "sampleDatabase", "test", "", queryAdapter);
+		SqlDataSource connector = new SqlDataSource("localhost:8888", "sampleDatabase", "test", "", queryAdapter);
 		DataQueryResult result = connector.executeQuery(dataQuery);
 		DataQueryResultIterator<TestModel> iterator = result.iterator(TestModel.class);
 		
@@ -91,7 +91,7 @@ public class MySqlDataConnectorTest extends TestCase {
 	}
 	
 	public void testCrudProcess() throws SQLException {		
-		SqlConnector connector = new SqlConnector("localhost:3306", "rocxis", "rocxis", queryAdapter);
+		SqlDataSource connector = new SqlDataSource("localhost:3306", "rocxis", "rocxis", queryAdapter);
 		Drawing drawing = new Drawing(-1, "Alberto");
 		DataQuery queryInsert = DataQueryFactory.insert(drawing).createQuery();
 		DataQuery querySelect = DataQueryFactory.select(Drawing.class).where("`name`='Alberto'").createQuery();

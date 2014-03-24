@@ -1,4 +1,4 @@
-package com.aichamorro.dal.connectors;
+package com.aichamorro.dal.datasource;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,7 +11,7 @@ import com.aichamorro.dal.dataquery.result.DataQueryResult;
 import com.aichamorro.dal.dataquery.result.ErrorDataQueryResult;
 import com.aichamorro.dal.dataquery.result.ResultSetDataQueryResult;
 
-public class SqlConnector implements DataConnector {
+public class SqlDataSource implements DataSource {
 	private final String dbProtocol = "jdbc:mysql://";
 	private String _url;
 	private String _username;
@@ -19,11 +19,11 @@ public class SqlConnector implements DataConnector {
 	private Connection _connection;
 	private SQLException _error;
 
-	public SqlConnector(String host, String database, String username, SqlDataQueryAdapter queryAdapter) {
+	public SqlDataSource(String host, String database, String username, SqlDataQueryAdapter queryAdapter) {
 		this(host, database, username, "", queryAdapter);
 	}
 	
-	public SqlConnector(String host, String database, String username, String password, SqlDataQueryAdapter queryAdapter) {
+	public SqlDataSource(String host, String database, String username, String password, SqlDataQueryAdapter queryAdapter) {
 		assert null != host && !host.isEmpty() : "Host cannot be neither null nor empty";
 		assert null != database && !database.isEmpty() : "database cannot be neither null nor empty";
 		assert null != username && !username.isEmpty() : "username cannot be neither null nor empty";
