@@ -7,7 +7,7 @@ import java.util.Set;
 import com.aichamorro.dal.model.annotations.ModelId;
 
 /**
- * <p>Simple implementation of the {@link Model} interface.</p>
+ * <p>Cached implementation of the {@link Model} interface.</p>
  * <p>This implementation caches the structure of the model
  * when it is requested calling {@link #getModelFields} method.</p>
  * <p>Every model that extends from {@code ModelImpl}, can use the 

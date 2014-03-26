@@ -2,17 +2,22 @@ package com.aichamorro.dal.dataquery;
 
 import com.aichamorro.dal.model.Model;
 
+/**
+ * Creates {@link DataQuery} objects.
+ * @author achamorro
+ *
+ */
 public class DataQueryFactory {
 	private DataQuery.QueryType _type;
 	private Class<?> _objectClass;
 	private Model _payload;
 	private DataQueryFilter _where;
 	
-	private DataQueryFactory(DataQuery.QueryType type, Class<?> objectClass) {
+	private DataQueryFactory(DataQuery.QueryType type, Class<? extends Model> objectClass) {
 		this(type, objectClass, null);
 	}
 	
-	private DataQueryFactory(DataQuery.QueryType type, Class<?> objectClass, Model payload) {
+	private DataQueryFactory(DataQuery.QueryType type, Class<? extends Model> objectClass, Model payload) {
 		_type = type;
 		_objectClass = objectClass;
 		_payload = payload;
@@ -34,7 +39,7 @@ public class DataQueryFactory {
 		return this;
 	}
 	
-	public static DataQueryFactory select(Class<?> objectClass) {
+	public static DataQueryFactory select(Class<? extends Model> objectClass) {
 		DataQueryFactory result = new DataQueryFactory(DataQuery.QueryType.SELECT, objectClass);
 		
 		return result;

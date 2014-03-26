@@ -5,7 +5,7 @@ import java.util.HashMap;
 import com.aichamorro.dal.datasource.DataSource;
 
 /**
- * Is an object used for storing DataSource objects. An unique identifier is stored along
+ * Used for storing DataSource objects. An unique identifier is stored along
  * with the DataSource to be used for accessing the DataSource through the DataAccessLayer.
  * @author achamorro
  *
@@ -24,9 +24,9 @@ public class DataAccessLayer {
 	}
 
 	/**
-	 * Access a DataSource stored in the DataAccessLayer instance.
+	 * Access to a stored DataSource.
 	 * @param dataSource String identifier used when the DataSource was stored.
-	 * @return The requested DataSource instance or null in case no DataSource with that identifier was stored.
+	 * @return The requested DataSource instance or <tt>null</tt> in case there is no DataSource stored with that identifier.
 	 */
 	public DataSource on(String dataSource) {
 		assert _datasources.containsKey(dataSource) : "DataSource used not valid";
@@ -35,10 +35,10 @@ public class DataAccessLayer {
 	}
 
 	/**
-	 * Add a DataSource instance to the DataAccessLayer instance.
-	 * @param datasource The DataSource instance to be stored.
+	 * Add a DataSource instance.
+	 * @param datasource The DataSource to be stored.
 	 * @param idDataSource An unique identifier to distinguish the DataSource instance among other stored instances.
-	 * @return this for method chaining.
+	 * @return <tt>this</tt> for method chaining.
 	 */
 	public DataAccessLayer addDataSource(DataSource datasource, String idDataSource) {
 		_datasources.put(idDataSource, datasource);

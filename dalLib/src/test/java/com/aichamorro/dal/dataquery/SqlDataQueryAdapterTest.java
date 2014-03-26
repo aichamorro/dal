@@ -90,13 +90,13 @@ public class SqlDataQueryAdapterTest extends TestCase{
 	public void testSimpleInsertQuery() {
 		DataQuery query = DataQueryFactory.insert(new MockModelForInsert()).createQuery();
 		
-		assertEquals("INSERT INTO `Queryable`(name,surname,age) VALUES('Alberto','Chamorro','32')", adapter.objectForQuery(query));
+		assertEquals("INSERT INTO `Queryable`(age,name,surname) VALUES('32','Alberto','Chamorro')", adapter.objectForQuery(query));
 	}
 	
 	public void testUpdateSimpleQuery() {
 		DataQuery query = DataQueryFactory.update(new MockModelForInsert()).createQuery();
 		
-		assertEquals("UPDATE `Queryable` SET name='Alberto',surname='Chamorro',age='32' WHERE idMock='5'", adapter.objectForQuery(query));
+		assertEquals("UPDATE `Queryable` SET age='32',name='Alberto',surname='Chamorro' WHERE idMock='5'", adapter.objectForQuery(query));
 	}
 }
 
