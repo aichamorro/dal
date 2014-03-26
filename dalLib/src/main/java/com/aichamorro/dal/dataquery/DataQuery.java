@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 import com.aichamorro.dal.model.Model;
-import com.aichamorro.dal.model.annotations.ModelName;
+import com.aichamorro.dal.model.ModelImpl;
 
 /**
  * <p>DataQuery is an abstraction of a data action.</p>
@@ -49,15 +49,24 @@ public class DataQuery {
 	QueryType _queryType;
 	Model _payload;
 	DataQueryFilter _where;
-	@SuppressWarnings("rawtypes")
-	Class _modelClass;
+	Class<? extends Model> _modelClass;
 	
-	@SuppressWarnings("rawtypes")
-	DataQuery(QueryType queryType, Class modelClass, Model object, DataQueryFilter where) {
+	private DataQuery(QueryType queryType, DataQueryFilter where) {
 		_queryType = queryType;
-		_payload = object;
-		_modelClass = modelClass;
 		_where = where;
+	}
+	DataQuery(QueryType queryType, Class<? extends Model> modelClass, DataQueryFilter where) {
+		this(queryType, where);
+		
+		_payload = null;
+		_modelClass = modelClass;
+	}
+	
+	DataQuery(QueryType queryType, Model object, DataQueryFilter where) {
+		this(queryType, where);
+
+		_payload = object;
+		_modelClass = object.getClass();
 	}
 
 	public QueryType getType() {
@@ -76,18 +85,10 @@ public class DataQuery {
 		return result;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void visit(DataQueryVisitor visitor) {
 		visitor.setType(_queryType);
-		
-		ModelName modelName = ((ModelName)_modelClass.getAnnotation(ModelName.class));
-		visitor.setModel( (null != modelName && modelName.value().length() > 0) ? modelName.value() : _modelClass.getSimpleName());			
-		
-		if( null != _payload ) {
-			visitor.setPayload(payloadAsHashMap());
-		}
-		if( _where != null ) {
-			visitor.addFilter(_where.iterator());		
-		}
+		visitor.setModel(ModelImpl.getModelNameFromClass(_modelClass));	
+		if( null != _payload ) { visitor.setPayload(payloadAsHashMap()); }
+		if( null != _where ) { visitor.addFilter(_where.iterator()); }
 	}
 }

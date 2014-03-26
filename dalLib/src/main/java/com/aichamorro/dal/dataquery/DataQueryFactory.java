@@ -9,7 +9,7 @@ import com.aichamorro.dal.model.Model;
  */
 public class DataQueryFactory {
 	private DataQuery.QueryType _type;
-	private Class<?> _objectClass;
+	private Class<? extends Model> _objectClass;
 	private Model _payload;
 	private DataQueryFilter _where;
 	
@@ -24,7 +24,9 @@ public class DataQueryFactory {
 	}
 	
 	public DataQuery createQuery() {
-		return new DataQuery(_type, _objectClass, _payload, _where);
+		return (_payload != null) ? 
+				new DataQuery(_type, _payload, _where) : 
+				new DataQuery(_type, _objectClass, _where);
 	}
 	
 	public DataQueryFactory where(String statement) {

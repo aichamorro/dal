@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import com.aichamorro.dal.model.annotations.ModelId;
+import com.aichamorro.dal.model.annotations.ModelName;
 
 /**
  * <p>Cached implementation of the {@link Model} interface.</p>
@@ -51,6 +52,16 @@ abstract public class ModelImpl implements Model {
 	public ModelImpl() {
 	}
 	
+	/**
+	 * Given a subclass of {@link Model}, returns the name of the model in the domain.
+	 * @param modelClass The class to which the name will be inferred from.
+	 * @return The domain name of the model.
+	 */
+	public static String getModelNameFromClass(Class<? extends Model> modelClass) {
+		ModelName annotation = (ModelName)modelClass.getAnnotation(ModelName.class);
+		
+		return (null != annotation && !annotation.value().isEmpty()) ? annotation.value() : modelClass.getSimpleName();
+	}
 	/**
 	 * Obtains the Field associated to a modelField.
 	 * @param modelField The name of a model's field.
