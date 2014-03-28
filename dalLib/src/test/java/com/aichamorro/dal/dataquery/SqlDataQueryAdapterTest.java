@@ -98,6 +98,42 @@ public class SqlDataQueryAdapterTest extends TestCase{
 		
 		assertEquals("UPDATE `Queryable` SET age='32',name='Alberto',surname='Chamorro' WHERE idMock='5'", adapter.objectForQuery(query));
 	}
+	
+	public void testBooleanMustBeTranslatedToNumbers() {
+		DataQuery query = DataQueryFactory.update(new BooleansModel(true, false, "StringId")).createQuery();
+		
+		assertEquals("UPDATE `Queryable` SET isFemale='0',isMale='1' WHERE mockId='StringId'", adapter.objectForQuery(query));
+	}
+	
+	public void testInheritModelFieldsForInserts() {
+		DataQuery query = DataQueryFactory.insert(new ChildModel()).createQuery();
+		
+		assertEquals("INSERT INTO `Queryable`(age,name,surname) VALUES('32','Alberto','Chamorro')", adapter.objectForQuery(query));
+	}
+	
+	public void testInheritModelFieldsForUpdates() {
+		DataQuery query = DataQueryFactory.update(new ChildModel()).createQuery();
+		
+		assertEquals("UPDATE `Queryable` SET age='32',name='Alberto',surname='Chamorro' WHERE idMock='5'", adapter.objectForQuery(query));
+	}
+}
+
+@ModelName("Queryable")
+class BooleansModel extends ModelImpl {
+	@ModelField
+	private Boolean isMale;
+	
+	@ModelField
+	private Boolean isFemale;
+	
+	@ModelId
+	private String mockId;
+	
+	public BooleansModel(boolean isMale, boolean isFemale, String id) {
+		this.isMale = isMale;
+		this.isFemale = isFemale;
+		this.mockId = id;
+	}
 }
 
 @ModelName("Queryable")
@@ -124,4 +160,10 @@ class MockModelForInsert extends ModelImpl {
 	public Long getModelIdValue() {
 		return _id;
 	}
+}
+
+
+@ModelName("Queryable")
+class ChildModel extends MockModelForInsert {
+	
 }

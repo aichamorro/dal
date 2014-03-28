@@ -70,14 +70,14 @@ public class DataQuery {
 	}
 
 	public QueryType getType() {
-		return _queryType;
+		return _queryType;		
 	}
 	
-	private HashMap<String, String> payloadAsHashMap() {
-		LinkedHashMap<String, String> result = new LinkedHashMap<String, String>();
+	private HashMap<String, Object> payloadAsHashMap(TypeAdapter adapter) {
+		LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>();
 		
 		for( String name : _payload.modelFields() ) {
-			result.put(name, _payload.get(name).toString());
+			result.put(name, adapter.getValueFor(_payload.getTypeFor(name), _payload.get(name)));
 		}
 		
 		result.remove(_payload.getModelIdName());
@@ -88,7 +88,7 @@ public class DataQuery {
 	public void visit(DataQueryVisitor visitor) {
 		visitor.setType(_queryType);
 		visitor.setModel(ModelImpl.getModelNameFromClass(_modelClass));	
-		if( null != _payload ) { visitor.setPayload(payloadAsHashMap()); }
+		if( null != _payload ) { visitor.setPayload(payloadAsHashMap(visitor)); }
 		if( null != _where ) { visitor.addFilter(_where.iterator()); }
 	}
 }

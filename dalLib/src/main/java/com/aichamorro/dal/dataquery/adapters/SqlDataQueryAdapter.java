@@ -43,7 +43,7 @@ public class SqlDataQueryAdapter implements DataQueryAdapter<String> {
 			}
 		}
 		
-		private String getKeysAsString(HashMap<String, String>payload) {
+		private String getKeysAsString(HashMap<String, Object>payload) {
 			StringBuilder sb = new StringBuilder();
 
 			for( String key : payload.keySet() ) {
@@ -54,7 +54,7 @@ public class SqlDataQueryAdapter implements DataQueryAdapter<String> {
 			return sb.substring(0, sb.length() - 1).toString();
 		}
 		
-		private String getValuesAsString(HashMap<String, String> payload) {
+		private String getValuesAsString(HashMap<String, Object> payload) {
 			StringBuilder sb = new StringBuilder();
 
 			for( String key : payload.keySet() ) {
@@ -67,7 +67,7 @@ public class SqlDataQueryAdapter implements DataQueryAdapter<String> {
 			return sb.substring(0, sb.length() - 1).toString();		
 		}
 
-		public void setPayload(HashMap<String, String>payload) {
+		public void setPayload(HashMap<String, Object>payload) {
 			StringBuilder sb = new StringBuilder();
 			
 			switch(_queryType) {
@@ -105,6 +105,14 @@ public class SqlDataQueryAdapter implements DataQueryAdapter<String> {
 			assert iterator.hasNext() : "WTF? Emtpy iterator? Really?";
 			
 			result += SqlStatements.WHERE + new SqlDataQueryFilterAdapter().statementAdapter(iterator.next());
+		}
+
+		public Object getValueFor(Class<?> type, Object value) {
+			if( Boolean.class.equals(type) ) {
+				return ((Boolean)value).booleanValue() ? '1' : '0';
+			}
+			
+			return value.toString();
 		}
 	}
 }

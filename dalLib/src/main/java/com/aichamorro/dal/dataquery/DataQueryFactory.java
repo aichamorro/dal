@@ -3,7 +3,22 @@ package com.aichamorro.dal.dataquery;
 import com.aichamorro.dal.model.Model;
 
 /**
- * Creates {@link DataQuery} objects.
+ * <p>Configures and creates {@link DataQuery} objects.</p>
+ * <h1>Creation of queries</h1>
+ * <p>The {@link DataQuery} objects that can be created 
+ * are 4:</p>
+ * <p><ul>
+ * <li><tt>Select</tt>. This queries are created with {@link #select} method.
+ * <li><tt>Update</tt>. This queries are created with {@link #update} method.
+ * <li><tt>Delete</tt>. This queries are created with {@link #delete} method.
+ * <li><tt>Insert</tt>. This queries are created with {@link #insert} method.
+ * </ul></p>
+ * <pre>
+ *DataQueryFactory.select(ExampleModel.class).createQuery()
+ *DataQueryFactory.update(ExampleModelInstance).createQuery()
+ *DataQueryFactory.insert(ExampleModelInstance).createQuery()
+ *DataQueryFactory.delete(ExampleModelInstance).createQuery()</pre>
+ * <h1>Filters</h1>
  * @author achamorro
  *
  */
