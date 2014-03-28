@@ -4,7 +4,7 @@
   <groupId>com.aichamorro.dal</groupId>
   <artifactId>dal</artifactId>
   <packaging>jar</packaging>
-  <version>0.1.0-BETA2</version>
+  <version>0.1.0-BETA3</version>
   <name>dal</name>
   <url>http://maven.apache.org</url>
   <dependencies>
